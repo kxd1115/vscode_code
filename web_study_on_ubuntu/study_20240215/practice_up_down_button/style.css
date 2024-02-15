@@ -1,0 +1,28 @@
+body,
+html {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#matrix {
+  width: 400px;
+  margin: auto;
+  overflow: auto;
+  text-align: justify; /* 设置文本水平对齐 */
+}
+
+#arrowTop {
+  height: 9px;
+  width: 14px;
+  color: green;
+  position: fixed; /* 固定定位 */
+  top: 10px;
+  left: 10px;
+  cursor: pointer; /* 切换指针形态 */
+}
+
+#arrowTop::before {
+  content: '▲'; /* 设置文本内容 */
+}

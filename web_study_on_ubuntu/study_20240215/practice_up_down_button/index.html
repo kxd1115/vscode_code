@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>button</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="matrix">
+    <script>
+      for (let i = 0; i < 2000; i++) document.writeln(i)
+    </script>
+  </div>
+
+  <div id="arrowTop"></div>
+
+  <script>
+    // ... your code ...
+    // 页面向下滚动的距离没有超过窗口高度时 —— 按钮不可见。
+    // 当页面向下滚动距离超过窗口高度时 —— 在左上角出现一个“向上”的箭头。如果页面回滚回去，箭头就会消失。
+    // 单击箭头时，页面将滚动到顶部。
+    let arrowTop = document.getElementById("arrowTop");
+    arrowTop.hidden = true;
+    arrowTop.onclick = function(event) {
+      // 回到顶部，这里只需要使纵轴为0
+      window.scrollTo(pageXOffset,0);
+    };
+
+    function windowScroll(event) {
+      // 这里直接通过比较判断滚动高度和窗口高度，根据获取的值直接修改hidden的状态
+      // 很妙
+      arrowTop.hidden = (window.pageYOffset < document.documentElement.clientHeight);
+      
+    };
+    window.addEventListener('scroll', windowScroll);
+
+  </script>
+</body>
+</html>

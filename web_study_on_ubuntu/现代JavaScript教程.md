@@ -10374,6 +10374,7 @@ function checkPhoneKey(key) {
 
 ## 滚动
 `scroll`事件，允许对页面或元素滚动动作做出反应
-```js
 
-```
+### 防止滚动
+通过在导致滚动的事件上，使用`event.preventDefault()`来阻止滚动事件（例如在`pageUp`和`pageDown`的`keydown`事件上）。
+* 通过CSS的`overflow`启动滚动的方式更加可靠。
