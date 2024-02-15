@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>keyboard</title>
+</head>
+<body>
+  <input type="tel" placeholder="phone, please" onkeydown="return checkPhoneKey(event.key)" id="phone">
+  <script>
+    function keyboard(event) {
+      console.log(event.code, event.key);
+    }
+    document.addEventListener('keydown', keyboard);
+  </script>
+  <script>
+    let phone = document.getElementById("phone");
+
+    phone.oninput = function() {
+      console.log(this.value);
+    }
+
+    function checkPhoneKey(key) {
+      return (key>='0' && key<=9) || 
+      ["+", "-", "(", ")", "ArrowLeft", "ArrowRight", "Delete", "Backspace"].includes(key);
+    }
+  </script>
+</body>
+</html>
