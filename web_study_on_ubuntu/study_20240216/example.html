@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example</title>
+</head>
+<body>
+  <select name="" id="select" multiple >
+    <option value="apple" selected>Apple</option>
+    <option value="pear" selected>Pear</option>
+    <option value="banana">Banana</option>
+  </select>
+  <script>
+    let select = document.getElementById("select");
+
+    let selected = Array.from(select.options)
+                    .filter(option => option.selected) // 获取已选中的option
+                    .map(option => option.value);      // 获取已选中option的value，并返回一个数组
+    alert(selected); // apple, bear
+
+    let option = new Option("Text", "value", true, true);
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>practice_select</title>
+</head>
+<body>
+  <select id="genres">
+    <option value="rock">Rock</option>
+    <option value="blues" selected>Blues</option>
+  </select>
+  <script>
+    let select = document.getElementById("genres");
+
+    // select.options[select.selectedIndex]
+    console.log(select.value); // blues 当前选中的option的文本
+
+    let newOption = new Option("Classic", "classic");
+    select.append(newOption);
+  </script>
+</body>
+</html>

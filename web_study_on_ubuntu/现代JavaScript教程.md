@@ -10378,3 +10378,118 @@ function checkPhoneKey(key) {
 ### 防止滚动
 通过在导致滚动的事件上，使用`event.preventDefault()`来阻止滚动事件（例如在`pageUp`和`pageDown`的`keydown`事件上）。
 * 通过CSS的`overflow`启动滚动的方式更加可靠。
+---
+# 表单，控件
+
+## 表单属性和方法
+表单`form`有许多特殊的属性和事件
+
+### 导航: 表单和元素
+文档中的表单是特殊集合`document.forms`的成员。既是所谓的**命名的集合**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example</title>
+</head>
+<body>
+  <form name="my">
+    <input type="text" name="one" value="1">
+    <input type="text" name="two" value="2">
+    <input type="text" name="one" value="3">
+  </form>
+  <script>
+    // 获取表单
+    let form = document.forms.my;
+
+    // 获取表单中的元素
+    // 如果同时有多个同名的元素，返回的则是一个集合
+    let elem = form.elements.one;
+
+    alert(elem[1].value); // 3
+  </script>
+</body>
+</html>
+```
+> 无论标签在第几层，都可以通过`form.elements`找到
+
+* 一个表单中有无数个子表单`<fieldset>`，也具有`field.elements`属性。
+
+> 更简短的方式: `form.name`
+> 例如刚才的例子，直接使用`form.one`依然可以找到对应的`input`。
+
+### 反向引用: element.form
+通过`element.form`来找到对应元素所在的表单
+```html
+<form name="my">
+  <input type="text" name="one" value="1">
+</form>
+<script>
+  // 获取表单
+  let form = document.forms.my;
+
+  // 获取表单中的元素
+  let elem = form.elements.one;
+
+  alert(elem.form.name); // my
+</script>
+```
+### 表单元素
+表单控件
+#### input和textarea
+通过`input.value`或者`input.check`(布尔值)来访问复选框(checkbox)和单选按钮(radio button)中的value。
+> 注意不要使用`input.innerHTML`
+
+#### select和option
+`<select>`的3个重要属性
+* `select.options`: `<option>`的子元素集合
+* `select.value`: 当前选取的`<option>`的*value*
+* `select.selectedInedx`: 当前选取的`<option>`的编号
+```html
+<select name="" id="select">
+  <option value="apple">Apple</option>
+  <option value="pear">Pear</option>
+  <option value="banana">Banana</option>
+</select>
+<script>
+  let select = document.getElementById("select");
+
+  select.options[2].selected = true; // 设置选中第三项
+  console.log(select.options[0]);    // 第一个选项<option>
+  console.log(select.selectedIndex); // 2 当前选中的<option>的index
+  console.log(select.value);         // banana 当前选中的<option>的value
+</script>
+```
+通过`<select>`的特性`multiple`来允许多选(很少被用到)
+```html
+<select name="" id="select" multiple >
+  <option value="apple" selected>Apple</option>
+  <option value="pear" selected>Pear</option>
+  <option value="banana">Banana</option>
+</select>
+<script>
+  let select = document.getElementById("select");
+
+  let selected = Array.from(select.options)
+                  .filter(option => option.selected) // 获取已选中的option
+                  .map(option => option.value);      // 获取已选中option的value，并返回一个数组
+  alert(selected); // apple, bear
+</script>
+```
+#### new Option
+```js
+// 通过简短语法创建一个<option>元素
+option = new Option(text, value, defaultSelected, selected);
+```
+* text: `<option>`中的文本
+* value: `<option>`中的value
+* defaultSelected: 如果为`true`，那么`selected`HTML-特性（attribute）就会被创建，
+* selected: 如果为`true`，那么这个`<option>`就会被选中
+> 在实际使用过程中，通常应该同时设置defaultSelected和selected为相同的值(true/false)，或者同时忽略
+
+
+
+
+
