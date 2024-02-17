@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>example</title>
+    <style>
+        .invalid {
+            border-color: red;
+        }
+        #error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    Your email please: <input type="email" id="input">
+    <div id="error"></div>
+    <script>
+        let input = document.getElementById("input");
+        let error = document.getElementById("error");
+        input.onblur = function() {
+            if (!input.value.includes("@")) {
+                input.classList.add("invalid"); // 不是邮箱的情况
+                error.innerHTML = "Please enter a correct email";
+            }
+        };
+
+        input.onfocus = function() {
+            // 聚焦的同时，删除错误状态
+            if (this.classList.contains('invalid')) {
+                // 如果邮箱输入错误，移除错误提示
+                this.classList.remove('invalid');
+                error.innerHTML = "";
+            }
+        }
+    </script>
+</body>
+</html>

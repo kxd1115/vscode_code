@@ -10489,7 +10489,82 @@ option = new Option(text, value, defaultSelected, selected);
 * selected: 如果为`true`，那么这个`<option>`就会被选中
 > 在实际使用过程中，通常应该同时设置defaultSelected和selected为相同的值(true/false)，或者同时忽略
 
+## 聚焦: focus/blur
 
+聚焦(focus)到一个元素通常意味着: "准备在此处接受数据"
+失去焦点(blur)通常意味着: "数据已经输入完成"
+
+### focus/blur事件
+
+聚焦触发`focus`事件，失去焦点触发`blur`事件
+
+```html
+<style>
+    .invalid {
+        border-color: red;
+    }
+    #error {
+        color: red;
+    }
+</style>
+Your email please: <input type="email" id="input">
+<div id="error"></div>
+<script>
+    let input = document.getElementById("input");
+    let error = document.getElementById("error");
+    input.onblur = function() {
+        if (!input.value.includes("@")) {
+            input.classList.add("invalid"); // 不是邮箱的情况
+            error.innerHTML = "Please enter a correct email";
+        }
+    };
+
+    input.onfocus = function() {
+        // 聚焦的同时，删除错误状态
+        if (this.classList.contains('invalid')) {
+            // 如果邮箱输入错误，移除错误提示
+            this.classList.remove('invalid');
+            error.innerHTML = "";
+        }
+    }
+</script>
+```
+
+### focus/blur方法
+
+通过`elem.focus()`和`elem.blur()`方法，可以设置和移除元素上的焦点。
+
+### 允许在任何元素上聚焦: tabindex
+
+在默认情况下，很多元素不支持聚焦。(用户可以交互的元素都支持`focus/blur`)
+
+* 使用HTML特性`tabindex`可以改变这种情况
+* 任何具有`tabindex`特性的元素，都会变成可以聚焦的，在通过`tab`切换时
+  * `tabindex="0"`: 会让该元素排在所有具有`tabindex>=1`的元素后面
+  * `tabindex="-1"`: 只允许以编程的方式聚焦元素，但`elem.focus()`依然有效
+  * 其他情况会按照数值大小顺序切换
+
+### focus/blur委托
+
+`focus`和`blur`事件不会向上冒泡
+
+* 处理方法1
+
+```js
+// 将处理程序置于捕获阶段
+focus.addEventListener("focus", () => form.classList.add("focused"), true);
+focus.addEventListener("blur", () => form.classList.add("focused"), true);
+```
+
+* 处理方法2
+  使用`focusin`和`focusout`事件，和`focus/blur`完全一样，只是它们会冒泡。
+
+> 必须使用`elem.addEventListener`来分配它们
+
+```js
+focus.addEventListener("focusin", () => form.classList.add("focused"));
+focus.addEventListener("focusout", () => form.classList.add("focused"));
+```
 
 
 
