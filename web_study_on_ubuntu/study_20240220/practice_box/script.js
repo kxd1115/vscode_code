@@ -1,16 +1,19 @@
 let table = document.getElementById('bagua-table');
 
 /* your code */
+// 我的方案，只完成了90%，待解决的问题：为什么按下取消后，依然返回以改变的文本？
 let onFocus;
 
 table.onclick = function(event) {
   let target = event.target.closest("td");
+  let data = target.innerHTML
   if (!target) return;
+
 
   // 创建一个textarea标签，设置类名称，文本内容
   let textArea = document.createElement("textarea");
-  // textArea.className = "selectbox";
-  textArea.innerHTML = target.innerHTML;
+  textArea.className = "edit-area";
+  textArea.innerHTML = data;
   textArea.style.cssText = `
                   height: ${target.clientHeight}px;
                   width: ${target.clientWidth}px;
@@ -22,12 +25,14 @@ table.onclick = function(event) {
   textArea.focus();
   
   // 创建按钮
+  let div = document.createElement("div");
   let buttonOK = document.createElement("button");
   let buttonCancel = document.createElement("button");
   buttonOK.innerHTML = "Cancel";
   buttonCancel.innerHTML = "OK";
-  textArea.after(buttonOK);
-  textArea.after(buttonCancel);
+  textArea.after(div);
+  div.appendChild(buttonCancel);
+  div.appendChild(buttonOK);
 
   // 按下OK按时，失去焦点，并修改文本
   buttonOK.onclick = function() {
@@ -36,7 +41,7 @@ table.onclick = function(event) {
 
   // 按下Cancel时，失去焦点，不修改文本
   buttonCancel.onclick = function() {
-    removeButton(target.innerHTML);
+    removeButton(data);
   }
 
   function removeButton(val) {
@@ -48,6 +53,7 @@ table.onclick = function(event) {
     textArea.replaceWith(target);
 
     // 移除按钮
+    div.remove();
     buttonOK.remove();
     buttonCancel.remove();
   }
@@ -68,10 +74,6 @@ table.onclick = function(event) {
   
   if (!onFocus) {
     // 这里有问题，待修改
-    target.onclick = function() {
-      table.addEventListener('click', function() {
-        return false;
-      });
-    };
+    onFocus = null;
   };
 };
