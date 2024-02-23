@@ -10566,5 +10566,27 @@ focus.addEventListener("focusin", () => form.classList.add("focused"));
 focus.addEventListener("focusout", () => form.classList.add("focused"));
 ```
 
+## 事件: change, input, cut, copy, paste
+
+### 事件: change
+当元素完成更改时，触发`change`事件。
+文本框在失去聚焦的时候，就会触发`change`事件。
+```html
+<!-- 失去聚焦后，触发change事件，显示输入的内容 -->
+<input type="text" onchange="alert(this.value)">
+<input type="button" value="Button">
+```
+对于其他`select, input type=checkbox/radio`等，会再更改选项后立即触发`change`事件。
+
+### 事件: input
+当用户对输入值做出修改后，就会触发`input`事件。
+与键盘事件不同，只要值修改了，`input`事件就会触发（包含非键盘带来的值变更：鼠标复制粘贴等）。
+> 无法阻止oninput中的任何事件
+> 因为输入更改后，立即触发，所以无法使用`event.preventDefault()`。
+
+### 事件: cut, copy, paste
+剪切，复制/粘贴的时候触发。
+属于`ClipboardEvent`类。
+可以使用`event.preventDefault()`来中止行为。
 
 
