@@ -10595,4 +10595,31 @@ focus.addEventListener("focusout", () => form.classList.add("focused"));
 `form.submit()`方法允许从js启动表单发送。
 
 ### 事件: submit
+提交表单的两种方式
+1. 点击`<inpupt type="submit">`
+2. 在`input`字段中按下`enter`按键
+* 都会触发`submit`事件。可以通过处理程序检查数据是否准确，有错误则显示，并调用`event.preventDefault()`来阻止数据回传至服务器。
 
+> 在`input`中按`entry`键时，会触发一次`click`事件
+```html
+<form onsubmit="return false">
+  <input type="text" value="Focus here and press enter">
+  <input type="submit" value="Submit" onclick="alert('click')">
+</form>
+```
+### 方法: submit
+通过`form.submit()`方法，手动将表单提交到服务器
+```js
+let form = document.createElement('form');
+form.action = 'https://google.com/search';
+form.method = 'GET';
+
+form.innerHTML = '<input name="q" value="test">';
+
+// 该表单必须在文档中才能提交
+document.body.append(form);
+
+form.submit();
+```
+#### 模态框
+用户关闭模态框之前，无法和其他内容交互
