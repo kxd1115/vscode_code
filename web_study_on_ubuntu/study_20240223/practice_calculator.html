@@ -84,16 +84,32 @@
     // initial: 总存款的初始值
     // interest: 例如 0.05 意味着每年涨幅 5%
     // years: 要等待多少年
-    
-    // your code
-    form.oninput = function(event) {
+    let before = document.getElementById("money-before");
+    let after = document.getElementById("money-after");
 
+    // 获取柱状div
+    const bars = document.querySelectorAll("div");  
+
+    function moneyChange() {
+      // 获取存款，利息等
       let initial = form.money.value;
       let years = form.months.value / 12;
       let interest = form.interest.value / 100;
-
+      // 根据公式，计算最终金额
       let result = Math.round(initial * (1 + interest) ** years);
+      // 事实展示金额
+      before.innerHTML = initial;
+      after.innerHTML = result;
+
+      // 修改div的高度
+      bars[0].style.height =  initial / 100 + "px";
+      bars[1].style.height =  result / 100 + "px";
     }
+    moneyChange();
+    
+    form.oninput = function(event) {
+      moneyChange();
+    };
 
   </script>
 
