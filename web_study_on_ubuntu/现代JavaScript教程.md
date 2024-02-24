@@ -10590,3 +10590,9 @@ focus.addEventListener("focusout", () => form.classList.add("focused"));
 可以使用`event.preventDefault()`来中止行为。
 
 
+## 表单: 事件和方法提交
+提交表单时，触发`submit`事件，用与在将表单发送到服务器之前对表单进行校验，或者中止提交，并使用Js来处理表单。
+`form.submit()`方法允许从js启动表单发送。
+
+### 事件: submit
+
