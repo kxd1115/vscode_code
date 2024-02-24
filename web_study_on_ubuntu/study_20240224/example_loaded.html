@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example</title>
+</head>
+<body>
+  <script>
+    window.onload = function() {
+      alert("Page loaded");
+      alert(`Image Size: ${img.offsetHeight} x ${img.offsetWidth}`);
+    }
+    function work() { alert("ready!")};
+    if (document.readyState == 'loading') {
+      // 仍在加载，等待事件
+      document.addEventListener("DOMContentLoaded", work);
+    } else {
+      // DOM准备就绪！
+      work();
+    }
+  </script>
+  <!-- 图片会在之后加载 -->
+  <img src="https://en.js.cx/clipart/train.gif?speed=1&cache=0" alt="" id="img">
+</body>
+</html>

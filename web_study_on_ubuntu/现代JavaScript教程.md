@@ -10623,3 +10623,93 @@ form.submit();
 ```
 #### 模态框
 用户关闭模态框之前，无法和其他内容交互
+
+# 加载文档和其他资源
+## 页面生命周期: DOMContentLoaded, load, beforeunload, unload
+* `DOMContentLoaded`: 浏览器已经完全加载HTML，并构建了DOM树，但外部资源可能尚未加载完成
+  * 对应事件：DOM已就绪
+* `load`: HTML准备就绪，且外部资源也加载完成
+  * 对应事件: 外部资源已加载完成
+* `beforeunload/unload`: 当用户离开页面时
+  * `beforeunload`事件: 用户正在离开：可以检查更改，并询问是否确定离开。
+  * `unload`事件: 用户几乎已经离开了，但我们仍然可以进行一些操作，例如发送统计数据。
+
+### DOMContentLoaded
+发生在`document`对象上。
+必须使用`addEventListener`来捕获。
+```js
+document.addEventListener("DOMContentLoaded", ready);
+// 不支持 document.onDOMContentLoaded = ...
+```
+```html
+<script>
+  function ready() {
+    alert("DOM is ready");
+  }
+  // 先显示 DOM is ready
+  document.addEventListener("DOMContentLoaded", ready);
+</script>
+<!-- 图片会在之后加载 -->
+<img src="https://en.js.cx/clipart/train.gif?speed=1&cache=0" alt="">
+```
+#### DOMContentLoaded和脚本
+js脚本会在HTML构建`DOM`之前运行它。
+因为不确定js脚本是否存在修改DOM的情况，`DOMContentLoaded和脚本`所以必须等脚本执行结束。
+
+> 不会阻塞`DOMContentLoaded`的脚本
+1. 具有`async`特性的异步脚本
+2. 使用`document.createElement('script')`动态生成并添加到网页中的
+
+#### DOMContentLoaded和样式
+外部样式不会影响DOM
+* 注意: 如果样式表在脚本前面，则会影响DOMContentLoaded
+```html
+<link type="text/css" rel="stylesheet" href="style.css">
+<script>
+  // 在样式表加载完成之前，脚本都不会执行
+  alert(getComputedStyle(document.body).marginTop);
+</script>
+```
+#### 浏览器内建的自动填充
+Firefox，Chrome 和 Opera 都会在 DOMContentLoaded 中自动填充表单。
+例如带有账号和密码的登录表单。
+
+### window.onload
+当整个页面，包括样式、图片和其他资源被加载完成，会触发`window.onload`事件。
+```html
+<script>
+  window.onload = function() {
+    // 页面加载完毕
+    alert("Page loaded");
+    // 此时会显示图片尺寸
+    alert(`Image Size: ${img.offsetHeight} x ${img.offsetWidth}`);
+  }
+</script>
+<img src="https://en.js.cx/clipart/train.gif?speed=1&cache=0" alt="" id="img">
+```
+
+### window.onunload
+当访问者离开页面时，`window.onunload`事件就会触发。
+
+### window.onbeforeunload
+如果访问者触发了离开页面的导航或试图关闭窗口，该事件就会要求进行更多确认。
+> `event.preventDefault()`不会在`onbeforeunload`事件中生效
+
+### readyState
+`document.readyState`属性会为我们提供当前加载状态的信息
+3个值
+* `loading`: 文档正在被加载
+* `interactive`: 文档被全部读取
+* `complete`: 文档被全部读取, 并且所有资源（包括外部资源）全部记载完成。
+```js
+function work()
+if (document.readyState == 'loading') {
+  // 仍在加载，等待事件
+  document.addEventListener("DOMContentLoaded", work);
+} else {
+  // DOM准备就绪！
+  work();
+}
+```
+#### readystatechange
+`readystatechange`事件会在状态改变时触发，
