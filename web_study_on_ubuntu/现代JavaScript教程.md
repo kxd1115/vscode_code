@@ -10898,3 +10898,38 @@ let range = new Range();
 每个宏任务之后，引擎会立即执行微任务队列中的所有任务，然后再执行其他的宏任务，或渲染，或进行其他任何操作。
 
 一般的执行顺序（首先是脚本，然后是微任务，渲染等，之后的其他宏任务）
+
+---
+# 其他文章
+
+# Frame和window
+
+## 弹窗和window方法
+
+### 阻止弹窗
+**如果弹窗是在用户触发的事件处理程序（如 onclick）之外调用的，大多数浏览器都会阻止此类弹窗。**
+```js
+// 弹窗被阻止
+window.open('https://javascript.info');
+
+// 弹窗被允许
+button.onclick = () => {
+  window.open('https://javascript.info');
+};
+```
+```js
+// 在setTimeout中的延迟弹窗会被允许
+setTimeout(() => window.open('http://google.com'), 3000);
+```
+
+### window.open
+```js
+// 语法
+window.open(url, name, params);
+```
+
+### 关闭弹窗
+关闭弹窗: `win.close()`
+检查窗口是否关闭: `win.closed`
+
+## 跨窗口通信
