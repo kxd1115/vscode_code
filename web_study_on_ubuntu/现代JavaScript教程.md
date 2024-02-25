@@ -10712,4 +10712,76 @@ if (document.readyState == 'loading') {
 }
 ```
 #### readystatechange
-`readystatechange`事件会在状态改变时触发，
+`readystatechange`事件会在状态改变时触发
+
+## 脚本： async, defer
+通过`async`和`defer`特性解决HTML加载笨重脚本带来的延迟问题。
+
+### defer
+`defer`特性让浏览器在不等待脚本加载完成的情况下，继续处理HTML，构建DOM。
+* 具有`defer`特性的脚本不会阻塞页面
+* 具有`defer`特性的脚本总是要等到DOM解析完毕
+```html
+<!-- 1 -->
+<p>...content before scripts...</p>
+
+<script>
+  // 4
+  document.addEventListener('DOMContentLoaded', () => alert("DOM ready after defer!"));
+</script>
+
+<!-- 3 -->
+<script defer src="https://javascript.info/article/script-async-defer/long.js?speed=1"></script>
+
+<!-- 2 -->
+<p>...content after scripts...</p>
+```
+##### 具有`defer`特性的脚本保持其相对顺序，就像常规脚本一样。
+按前后顺序执行
+
+> defer特性仅适用于外部脚本
+
+### async
+异步特性，意味着脚本时完全独立的。
+* 浏览器不会因`async`脚本而阻塞。
+* 其他脚本不会等待`async`脚本加载完成，`async`脚本也不会等待其他脚本。
+* `DOMContentLoaded`和异步脚本(`async`脚本)不会彼此等待。
+> 异步脚本以加载的优先顺序执行（谁先加载，谁先执行）。
+> 该特性仅适用于外部脚本
+
+### 动态脚本
+可以使用js动态的创建一个脚本，并将其附加到文档中
+```js
+let script = document.createElement('script');
+script.src = "/article/script-async-defer/long.js";
+document.body.append(script); // 脚本在添加后，立即开始加载
+```
+**默认情况下，动态脚本的行为时"异步"的。**
+但如果我们设置了`script.async=false`，则会改变这个规则。
+
+
+## 资源加载: onload, onerror
+跟踪外部资源加载是否成功：
+* `onload`: 成功加载
+* `onerror`: 出现错误
+
+### 加载脚本
+
+#### script.onload
+在脚本加载完成时触发
+
+#### script.onerror
+发生在脚本加载期间的error，会被`onerror`事件跟踪识别到
+
+> `onload/onerror`事件仅追踪加载本身。
+
+### 其他资源
+`onload/onerror`基本上适用于具有外部`src`的任何资源。
+
+### 跨源策略
+如果我们使用的是其他域的脚本，并脚本中存在error，那么我们无法获取`error`的详细信息。
+* 一个源（域/端口/协议三者）无法获取另一个源（origin）的内容。
+要允许跨源访问，`<script>`标签中需要具有`crossorigin`特性，并且远程服务器必须提供特殊的header。
+* `crossorigin="anonymous"`: 如果服务器的响应带有包含 * 或我们的源（origin）的 header Access-Control-Allow-Origin，则允许访问。浏览器不会将授权信息和 cookie 发送到远程服务器。
+* `crossorigin="use-credentials"`: 如果服务器发送回带有我们的源的 header Access-Control-Allow-Origin 和 Access-Control-Allow-Credentials: true，则允许访问。浏览器会将授权信息和 cookie 发送到远程服务器。
+"anonymous"（不会发送 cookie，需要一个服务器端的 header）和 "use-credentials"（会发送 cookie，需要两个服务器端的 header）之间进行选择。

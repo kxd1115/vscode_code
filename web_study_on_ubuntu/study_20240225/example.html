@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example</title>
+</head>
+<body>
+  <!-- 1 -->
+  <p>...content before scripts...</p>
+
+  <script>
+    // 4
+    document.addEventListener('DOMContentLoaded', () => alert("DOM ready after defer!"));
+  </script>
+
+  <!-- 3 -->
+  <script defer src="https://javascript.info/article/script-async-defer/long.js?speed=1"></script>
+  
+  <!-- 2 -->
+  <p>...content after scripts...</p>
+</body>
+</html>
