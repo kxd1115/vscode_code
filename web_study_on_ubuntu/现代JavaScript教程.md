@@ -10782,6 +10782,45 @@ document.body.append(script); // 脚本在添加后，立即开始加载
 如果我们使用的是其他域的脚本，并脚本中存在error，那么我们无法获取`error`的详细信息。
 * 一个源（域/端口/协议三者）无法获取另一个源（origin）的内容。
 要允许跨源访问，`<script>`标签中需要具有`crossorigin`特性，并且远程服务器必须提供特殊的header。
-* `crossorigin="anonymous"`: 如果服务器的响应带有包含 * 或我们的源（origin）的 header Access-Control-Allow-Origin，则允许访问。浏览器不会将授权信息和 cookie 发送到远程服务器。
+* `crossorigin="anonymous"`: 如果服务器的响应带有包6含 * 或我们的源（origin）的 header Access-Control-Allow-Origin，则允许访问。浏览器不会将授权信息和 cookie 发送到远程服务器。
 * `crossorigin="use-credentials"`: 如果服务器发送回带有我们的源的 header Access-Control-Allow-Origin 和 Access-Control-Allow-Credentials: true，则允许访问。浏览器会将授权信息和 cookie 发送到远程服务器。
 "anonymous"（不会发送 cookie，需要一个服务器端的 header）和 "use-credentials"（会发送 cookie，需要两个服务器端的 header）之间进行选择。
+
+---
+
+# 杂项
+## DOM变动观察器
+内建对象`MutationObserver`用于观察DOM元素，并在检测到更改时触发回调。
+
+### 语法
+```js
+// 创建一个观察器
+let observer = new MutationObserver(callback);
+// 将其附加到一个DOM节点
+observer.observe(node, config);
+```
+config是一个具有布尔选项的对象
+* `childList`: 观察`node`直接子节点
+* `subtree`: 观察`node`所有后代的更改
+* `attributes`: 观察`node`特性
+* `attributeFilter`: 特性数组名称，只观察选定的特性
+* `characterData`: 是否观察`node.data`(文本内容) 
+其他选项
+* `attributeOldValue`: 为true时，将特性的旧值传递给回调
+* `characterDataValue`: 为true时，将`node.data`的旧值和新值都传递给回调
+##### 发生更改后，将执行"回调
+更改被作为一个`MutationRecord`对象列表传入第一个参数，而观察期自身作为第二个参数
+`MutationRecord`对象的特性
+* `type`: 类型根据节点被修改的情况变动
+  * `attributes`: 特性被修改
+  * `characterData`: 数据被修改，用于文本节点
+  * `childList`: 添加/删除了子元素
+* `target`: 修改发生的位置
+...
+
+### 其他方法
+* `observer.disconnect()`: 停止观察
+停止观察时，使用`observer.takeRecords()`获取尚未处理的变动记录列表
+
+> 观察节点不影响垃圾回收（观察器在内部对节点使用弱引用）
+
