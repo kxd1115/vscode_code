@@ -10950,7 +10950,6 @@ let promise = fetch(url, [options]);
 * `status`: `HTTP`状态码
 * `ok`: 布尔值, 如果`HTTP`状态码为200-299，则为true。
 
-
 2. 为了获取response body(请求体), 我们需要使用一个其他的方法调用。
 `Response`提供了很多基于`promise`的方法，用来访问不同的body
 * `response.text()`: 读取response，并以文本形式返回
@@ -11108,3 +11107,13 @@ fetch(url, {
 ### AbortController是可伸缩的
 允许一次取消多个fetch。
 在有多个需要取消的fetch时，可以使用单个`AbortController`去中止这些任务
+
+## Fetch: 跨源请求
+
+## Fetch API
+仅做了解
+
+## WebSocket
+很有用，后续详细看一下
+## Sever Send Events
+很有用，后续详细看一下
