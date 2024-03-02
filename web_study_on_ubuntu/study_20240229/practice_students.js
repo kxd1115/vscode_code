@@ -14,9 +14,8 @@ let failList = students.filter((val) => val.score < 60);
 // console.log(failList);
 
 // 自己实现一个foreach()方法
-// 待完成
-function myForEach(callback, thisArg) {
-  return function callback() {
-
-  }
+Array.prototype.myForEach = function(fn) {
+  for (let i; i < this.length; i++) {
+    fn(this[i], i, this);
+  };
 }
