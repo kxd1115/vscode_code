@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example_formData</title>
+</head>
+<body>
+  <form id="formElem">
+    <input type="text" name="name" value="John">
+    <input type="text" name="surname" value="Smith">
+    <input type="submit">
+  </form>
+  <script>
+    let formELem = document.getElementById('formElem');
+    formELem.onsubmit = async (event) => {
+      event.preventDefault(); // 阻止默认行为
+
+      let response = fetch('/article/formdata/post/user', {
+        method: 'POST',
+        body: new FormData(formELem),
+      });
+
+      let result = await response.json();
+
+      alert(result.message);
+    }
+  </script>
+</body>
+</html>

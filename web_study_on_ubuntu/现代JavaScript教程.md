@@ -11013,3 +11013,98 @@ let response = await fetch('/article/fetch/post/user', {
 let result = await response.json();
 alert(result.message);
 ```
+
+## FormData
+表示HTML表单数据的对象
+```js
+let formDate = new FormData([form]);
+```
+```html
+<form id="formElem">
+  <input type="text" name="name" value="John">
+  <input type="text" name="surname" value="Smith">
+  <input type="submit">
+</form>
+<script>
+  let formELem = document.getElementById('formElem');
+  formELem.onsubmit = async (event) => {
+    event.preventDefault(); // 阻止默认行为
+
+    let response = fetch('/article/formdata/post/user', {
+      method: 'POST',
+      body: new FormData(formELem),
+    });
+
+    let result = await response.json();
+
+    alert(result.message);
+  }
+</script>
+```
+
+### FormData方法
+使用以下方法修改`formData`中的字段
+* `formData.append(name, value)`
+* `formData.append(name, blob, fileName)`
+* `formData.delete(name)`
+* `formData.get(name, value)`
+* `formData.has(name, value)`
+* `formData.set(name, value)`
+* `formData.set(name, blod, fileName)`
+
+### 发送带有文件的表单
+表单始终以`Content-Type: multipart/form-data`来发送数据
+
+### 发送Blob数据的表单
+
+## Fetch下载进度
+`fetch`方法允许跟踪**下载**进度。
+使用`response.body`属性，该属性给与了对进度读取的完全控制，我们可以随时计算下载了多少。
+```js
+// 代替response.json()及其他方法
+const reader = response.body.getReader();
+
+// 在body下载时，一直为无限循环
+while(true) {
+  // 当最后一块下载完成时，done值为true
+  // value是块字节的Uint8Array
+  const {done, value} = await reader.read();
+  // reader.read()的结果是一个具有2个属性的对象
+  // done: 读取完成时为true
+  // value: 字节的类型化数组: Uint8Array
+
+  if (done) {
+    break;
+  }
+
+  console.log(`Received ${value.length} bytes`);
+}
+```
+
+## Fetch: 中止(Abort)
+JS通常没有中止的概念，通过内建对象`AbortController`中止`fetch`和其他异步任务。
+
+### AbortController对象
+```js
+let controller = new AbortController();
+controller.abort() // 中止进程
+// 调用abort(), controller.signal会触发abort事件
+// controller.signal.aborted变为true，告诉你中止成功
+```
+* `abort()`方法
+* `signal`属性
+
+
+#### 与fetch一起使用
+如果要取消fetch，需要将`AbortController`的`signal`属性作为`fetch`的一个可选参数进行传递
+```js
+let controller = new AbortController();
+fetch(url, {
+  signal: controller.signal;
+})
+```
+当fetch被中止时，它的promise会以一个error AbortError reject。
+
+### AbortController是可伸缩的
+允许一次取消多个fetch。
+在有多个需要取消的fetch时，可以使用单个`AbortController`去中止这些任务
