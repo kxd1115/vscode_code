@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>example</title>
+</head>
+<body>
+  <script>
+    let response = await fetch('/article/fetch/logo-fetch.svg');
+
+    let blob = await response.blob(); // 下载为 Blob 对象
+
+    // 为其创建一个 <img>
+    let img = document.createElement('img');
+    img.style = 'position:fixed;top:10px;left:10px;width:100px';
+    document.body.append(img);
+
+    // 显示它
+    img.src = URL.createObjectURL(blob);
+
+    setTimeout(() => { // 3 秒后将其隐藏
+      img.remove();
+      URL.revokeObjectURL(img.src);
+    }, 3000);
+  </script>
+</body>
+</html>

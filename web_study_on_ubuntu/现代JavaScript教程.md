@@ -10932,4 +10932,84 @@ window.open(url, name, params);
 关闭弹窗: `win.close()`
 检查窗口是否关闭: `win.closed`
 
-## 跨窗口通信
+
+
+# 网络请求
+
+## Fetch
+一种现代通用的语法，用来向服务器获取信息。
+基本语法
+```js
+let promise = fetch(url, [options]);
+// options默认为一个GET请求
+```
+获取响应分为两个阶段
+1. 服务器发送响应头(response header), `feteh`返回的`promise`就使用内建的Response class对象来对响应头进行解析。
+* 检查响应头，查看请求是否成功
+通过response的属性中查看状态
+* `status`: `HTTP`状态码
+* `ok`: 布尔值, 如果`HTTP`状态码为200-299，则为true。
+
+
+2. 为了获取response body(请求体), 我们需要使用一个其他的方法调用。
+`Response`提供了很多基于`promise`的方法，用来访问不同的body
+* `response.text()`: 读取response，并以文本形式返回
+* `response.json()`: 将response解析为JSON格式
+* `response.formData()`: 以`FormData`对象的形式返回response
+* `response.blod()`: 以Blod(具有类型的二进制数据)的形式返回response
+* `response.arrayBuffer()`: 以ArrayBuffer(低级别的二进制数据)的形式返回response
+* `response.body`是ReadableStream对象，允许逐块读取body
+> 只能选用一种读取body的方法
+```js
+fetch('https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits')
+      .then(response => response.json())
+      .then(commits => alert(commits[0].author.login)); // smith558
+
+// 这里很奇怪， 我使用await写法，一直报错
+// await is only valid in async function
+// let url = 'https://api.github.com/repos/javascript-tutorial/en.javascript.info/commits';
+// let response = await fetch(url);
+
+// let commits = await response.json(); // 读取 response body，并将其解析为 JSON 格式
+
+// alert(commits[0].author.login);
+```
+
+### Response header
+`response.headers`中的一个类Map对象，且具有和Map类似的方法
+
+### Request header
+通过fetch中的`headers`选项设置
+```js
+let response = fetch(protecteUrl, {
+  headers: {
+    Authentication: 'secret'
+  }
+});
+```
+
+### POST请求
+创建POST请求需要使用一些fetch选项
+* `method`: HTTP请求方法，例如POST
+* `body`: request body
+  * 字符串
+  * FormData
+  * Blob/BufferSource
+  * URLSerachParams
+JSON比较常用
+```js
+let user = {
+  name: 'Jhon',
+  surname: 'Smith',
+};
+
+let response = await fetch('/article/fetch/post/user', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json;charset=utf-8'
+  },
+  body: JSON.stringify(user);
+});
+let result = await response.json();
+alert(result.message);
+```

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>practice</title>
+  <script src="https://zh.js.cx/test/libs.js"></script>
+  <script src="test.js"></script>
+</head>
+<body>
+  <script>
+    async function getUsers(names) {
+      let jobs = [];
+
+      for (let name of names) {
+        let job = fetch(`https://api.github.com/users/${name}`).then(
+          susscesReponse => {
+            if (susscesReponse.status != 200) {
+              return null;
+            } else {
+              return susscesReponse.json();
+            }
+          },
+          failResponse => {
+            return null
+          }
+        );
+        jobs.push(job);
+      }
+      
+      let results = await Promise.all(jobs);
+
+      return results;
+    }
+  </script>
+</body>
+</html>
