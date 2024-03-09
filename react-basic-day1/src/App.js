@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import './App.scss'
 import avatar from './images/bozai.png'
-
+import _ from 'loadsh'
+import classNames from 'classnames'
 /**
  * 评论列表的渲染和操作
  *
@@ -35,7 +36,7 @@ const defaultList = [
     },
     content: '我寻你千百度 日出到迟暮',
     ctime: '11-13 11:29',
-    like: 88,
+    like: 99,
   },
   {
     rpid: 1,
@@ -77,14 +78,30 @@ const tabs = [
 const App = () => {
 
   // 使用useState维护defaultList
-  const [commentList, setCommentList] = useState(defaultList);
+  const [commentList, setCommentList] = useState(_.orderBy(defaultList, 'like', 'desc'));
 
   // 删除评论
   const handleDel = (id) => {
     // console.log(id);
     // 对commentList进行过滤处理
     setCommentList(commentList.filter(item => item.rpid !== id));
-  } 
+  }
+
+  // 高亮tab
+  const [type, setType] = useState('hot');
+
+  const handleType = (type) => {
+    setType(type);
+    // 基于列表的排序
+    if (type === 'hot') {
+      //按照点赞排序
+      // 
+      setCommentList(_.orderBy(defaultList, 'like', 'desc'))
+    } else {
+      // 按照最新排序
+      setCommentList(_.orderBy(defaultList, 'ctime', 'desc'))
+    }
+  };
 
   return (
     <div className="app">
@@ -98,8 +115,13 @@ const App = () => {
           </li>
           <li className="nav-sort">
             {/* 高亮类名： active */}
-            <span className='nav-item'>最新</span>
-            <span className='nav-item'>最热</span>
+            {tabs.map((item) => (
+              <span className={classNames('nav-item', {active: type === item.type})}
+              onClick={() => handleType(item.type)}
+              key={item.type}>
+                { item.text }
+              </span>
+            ))}
           </li>
         </ul>
       </div>
