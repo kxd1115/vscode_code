@@ -1,8 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.scss'
 import avatar from './images/bozai.png'
 import _ from 'loadsh'
 import classNames from 'classnames'
+import { v4 as uuidv4 } from 'uuid'
+import dayjs from 'dayjs'
+
 /**
  * 评论列表的渲染和操作
  *
@@ -95,14 +98,45 @@ const App = () => {
     // 基于列表的排序
     if (type === 'hot') {
       //按照点赞排序
-      // 
-      setCommentList(_.orderBy(defaultList, 'like', 'desc'))
+      setCommentList(_.orderBy(defaultList, 'like', 'desc'));
     } else {
       // 按照最新排序
-      setCommentList(_.orderBy(defaultList, 'ctime', 'desc'))
+      setCommentList(_.orderBy(defaultList, 'ctime', 'desc'));
     }
   };
 
+  const inputRef = useRef(null);
+
+  // 发布评论功能
+  // 1. 绑定value
+  const [textValue, setTextValue] = useState("");
+  // 2. 点击发布
+  function sendText() {
+    if (textValue) {
+      // 获取评论内容
+      console.log(textValue);
+      // 将评论Push进入列表数组中
+      let newComment = {
+        rpid: uuidv4(), // uuid
+        user: {
+          uid: user.uid,
+          avatar: user.avatar,
+          uname: user.uname,
+        },
+        content: textValue,
+        ctime: dayjs(new Date()).format('MM-DD hh:mm'),
+        like: 0,
+      };
+      setCommentList([
+        ...commentList,
+        newComment
+      ]);
+    };
+    // 清空评论区原输入内容
+    setTextValue('');
+    // 聚焦到发布评论区域
+    inputRef.current.focus();
+  }
   return (
     <div className="app">
       {/* 导航 Tab */}
@@ -140,10 +174,13 @@ const App = () => {
             <textarea
               className="reply-box-textarea"
               placeholder="发一条友善的评论"
+              value={textValue}
+              ref={inputRef}
+              onChange={(e) => setTextValue(e.target.value)}
             />
             {/* 发布按钮 */}
             <div className="reply-box-send">
-              <div className="send-text">发布</div>
+              <div className="send-text" onClick={sendText}>发布</div>
             </div>
           </div>
         </div>
