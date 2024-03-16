@@ -14,6 +14,46 @@ import axios from 'axios'
  * 2. 删除评论
  */
 
+// 评论列表数据
+const defaultList = [
+  {
+    // 评论id
+    rpid: 3,
+    // 用户信息
+    user: {
+      uid: '13258165',
+      avatar: '',
+      uname: '周杰伦',
+    },
+    // 评论内容
+    content: '哎哟，不错哦',
+    // 评论时间
+    ctime: '10-18 08:15',
+    like: 88,
+  },
+  {
+    rpid: 2,
+    user: {
+      uid: '36080105',
+      avatar: '',
+      uname: '许嵩',
+    },
+    content: '我寻你千百度 日出到迟暮',
+    ctime: '11-13 11:29',
+    like: 99,
+  },
+  {
+    rpid: 1,
+    user: {
+      uid: '30009257',
+      avatar,
+      uname: '黑马前端',
+    },
+    content: '学前端就来黑马',
+    ctime: '10-19 09:00',
+    like: 66,
+  },
+]
 // 当前登录用户信息
 const user = {
   // 用户id
@@ -42,21 +82,7 @@ const tabs = [
 const App = () => {
 
   // 使用useState维护defaultList
-  //const [commentList, setCommentList] = useState(_.orderBy(defaultList, 'like', 'desc'));
-
-  // 获取接口数据
-  const [commentList, setCommentList] = useState([]);
-
-  // 使用useEffect请求数据
-  useEffect(() => {
-    // 请求数据
-    async function getList() {
-      // 使用axios请求数据
-      const res = await axios.get('http://localhost:3001/list');
-      setCommentList(res.data);
-    }
-    getList();
-  }, [])
+  const [commentList, setCommentList] = useState(_.orderBy(defaultList, 'like', 'desc'));
 
   // 删除评论
   const handleDel = (id) => {

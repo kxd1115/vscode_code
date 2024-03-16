@@ -1,35 +1,24 @@
 import { useState, useRef, createContext, useContext, useEffect } from 'react'
 
+// 封装自定义HOOK
+// 通用思路
+// 1. 声明use开头的函数
+// 2. 在函数体内封装可复用的逻辑
 
-function Son() {
-  // 1. 渲染时开启一个定时器
-  useEffect(() => {
-    // 副作用函数
-    const timer = setInterval(() => {
-      console.log("定时器运行中...");
-    }, 1000);
-    // 清除副作用
-    return () => {
-      clearInterval(timer);
-    };
-  }, [])
-
-  return (
-    <div>
-      this is Son
-    </div>
-  )
+function useToggle() {
+  const [value, setValue] = useState(true);
+  const toggle = () => setValue(!value);
+  return [value, toggle];
 }
 
 function App() {
-  // 通过条件渲染，模拟组件卸载
-  const [show, setShow] = useState(true);
+
+  const [value, toggle] = useToggle();
 
   return (
     <div className="App">
-      this is App
-      {show && <Son></Son>}
-      <button onClick={() => setShow(false)}>卸载Son组件</button>
+      {value && <div>this is div</div>}
+      <button onClick={toggle}>toggle</button>
     </div>
   );
 }
