@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const counterStore = createSlice({
   name: 'counter',
@@ -6,13 +6,13 @@ const counterStore = createSlice({
   initialState: {
     count: 0
   },
-  // 修改状态数据的方法 同步方法 支持直接修改
+  // 状态变化方法, 同步方法，支持直接修改
   reducers: {
-    increment(state) {
-      state.count++;
-    },
     decrement(state) {
-      state.count--;
+      state.count -= 1;
+    },
+    increment(state) {
+      state.count += 1;
     },
     addNum(state, action) {
       state.count += action.payload;
@@ -23,10 +23,9 @@ const counterStore = createSlice({
 // 解构出来actionCreater函数
 const {increment, decrement, addNum} = counterStore.actions;
 // 获取reducer函数
-const counterReducer = counterStore.reducer;
+const countReducer = counterStore.reducer;
 
-// 按需导出actionCreater
+// 按需导出对应的action函数
 export {increment, decrement, addNum};
-
-// 以默认方式导出reducer
-export default counterReducer;
+// 导出自定义的reducer函数
+export default countReducer;

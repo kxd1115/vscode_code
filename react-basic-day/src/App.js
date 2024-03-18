@@ -1,4 +1,6 @@
 import { useState, useRef, createContext, useContext, useEffect } from 'react'
+import { increment, decrement, addNum } from './store/modules/counterStore';
+import { useSelector, useDispatch } from 'react-redux';
 
 // 封装自定义HOOK
 // 通用思路
@@ -15,10 +17,19 @@ function App() {
 
   const [value, toggle] = useToggle();
 
+  const { count } = useSelector(state => state.counter);
+  const dispatch = useDispatch();
+
   return (
     <div className="App">
       {value && <div>this is div</div>}
       <button onClick={toggle}>toggle</button>
+      <div>
+        <button onClick={() => dispatch(decrement())}>-</button>
+        {count}
+        <button onClick={() => dispatch(increment())}>+</button>
+        <button onClick={() => dispatch(addNum(10))}>+10</button>
+      </div>
     </div>
   );
 }
