@@ -21,10 +21,11 @@ function App() {
   const { count } = useSelector(state => state.counter);
   const { channelList } = useSelector(state => state.channel);
   const dispatch = useDispatch();
-  // 使用useEffect触发异步请求执行
+  // 异步请求数据，使用useEffect
   useEffect(() => {
     dispatch(fetchChannelList())
   }, [dispatch])
+
   return (
     <div className="App">
       {value && <div>this is div</div>}
@@ -34,10 +35,10 @@ function App() {
         {count}
         <button onClick={() => dispatch(increment())}>+</button>
         <button onClick={() => dispatch(addNum(10))}>+10</button>
-        <ul>
-          { channelList.map(item => <li key={item.id}>{item.name}</li>) }
-        </ul>
       </div>
+      <ul>
+        { channelList.map(item => <li key={item.id}>{item.name}</li>) }
+      </ul>
     </div>
   );
 }
