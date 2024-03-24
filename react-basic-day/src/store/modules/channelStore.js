@@ -27,7 +27,7 @@ const fetchChannelList = () => {
   }
 };
 
-export { fetchChannelList};
+export { fetchChannelList };
 
 const channelreducer = channelStore.reducer;
 export default channelreducer;
