@@ -13,4 +13,13 @@ git remote set-url
 或：git remote set-url --add <名称> <新的地址>
 或：git remote set-url --delete <名称> <地址>
 
-如果首页不战死你提交的记录，那时因为当前的登录邮箱和github不一致
+如果首页不展示你提交的记录，那时因为当前的登录邮箱和github不一致
+
+### 解决远程仓库中文件夹有白色箭头，且不能打开的问题
+* 这是因为其他工程下有.git文件夹，Github将视其为子系统模块
+```shell
+git rm --cached 目录名
+git add .
+git commit -m "commit msg"
+git push
+```
