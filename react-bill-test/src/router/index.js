@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     element: <Layout></Layout>,
     children: [
       {
-        // path: '/month',
+        path: '/month',
         index: true, // 设置为默认二级目录
         element: <Month></Month>,
       },
