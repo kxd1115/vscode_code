@@ -111,6 +111,20 @@
       "money": 0,
       "date": "2024-03-30T15:21:38.868Z",
       "useFor": ""
+    },
+    {
+      "id": "6c19",
+      "type": "pay",
+      "money": -110,
+      "date": "2024-03-29T16:00:00.000Z",
+      "useFor": "drinks"
+    },
+    {
+      "id": "d113",
+      "type": "pay",
+      "money": -110,
+      "date": "2024-03-28T16:00:00.000Z",
+      "useFor": "drinks"
     }
   ]
 }
