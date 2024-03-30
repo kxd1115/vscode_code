@@ -125,6 +125,38 @@
       "money": -110,
       "date": "2024-03-28T16:00:00.000Z",
       "useFor": "drinks"
+    },
+    {
+      "id": "c594",
+      "type": "pay",
+      "money": 0,
+      "date": "2024-02-03T16:00:00.000Z",
+      "useFor": "food"
+    },
+    {
+      "id": "7f7d",
+      "type": "pay",
+      "money": 0,
+      "date": "2024-02-03T16:00:00.000Z",
+      "useFor": "food"
+    },
+    {
+      "id": "e2d4",
+      "type": "pay",
+      "money": 0,
+      "useFor": ""
+    },
+    {
+      "id": "5b68",
+      "type": "pay",
+      "money": 0,
+      "useFor": ""
+    },
+    {
+      "id": "4885",
+      "type": "pay",
+      "money": 0,
+      "useFor": ""
     }
   ]
 }

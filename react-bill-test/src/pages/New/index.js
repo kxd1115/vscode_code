@@ -3,7 +3,7 @@ import Icon from '@/components/icon';
 import './index.scss'
 import classNames from 'classnames'
 import { billListData, billTypeToName } from '@/contants'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react';
 import { addBillList } from '@/store/modules/billStore';
 import { useDispatch } from 'react-redux';
@@ -32,6 +32,7 @@ const New = () => {
       useFor: useFor
     };
     dispatch(addBillList(data));
+    navigate('/month'); // 点击保存的同时返回月度账单
   }
   // 存储选择的时间
   const [date, setDate] = useState();
@@ -125,7 +126,9 @@ const New = () => {
       </div>
 
       <div className="btns">
-        <Button className="btn save" onClick={saveBill}>
+        <Button className="btn save" onClick={
+          saveBill
+        }>
           保 存
         </Button>
       </div>
