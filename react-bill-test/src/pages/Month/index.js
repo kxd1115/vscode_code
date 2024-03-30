@@ -1,10 +1,20 @@
 import { NavBar, DatePicker } from 'antd-mobile';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import './index.scss';
 import classNames from 'classnames';
 import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import _ from 'lodash';
 
 const Month = () => {
+  // 按月做数据分组
+  const billList = useSelector(state => state.bill.billList);
+  const monthGroup = useMemo(() => {
+    // 返回计算之后的值
+    return _.groupBy(billList, (item) => dayjs(item.date).format('YYYY-MM'));
+  }, [billList]);
+  console.log(monthGroup);
+
   // 控制弹框的打开和关闭
   const [dateVisible, setVisible] = useState(false);
 
@@ -20,7 +30,7 @@ const Month = () => {
     const formatDate = dayjs(date).format('YYYY-MM');
     setCurrentDate(formatDate)
   };
-  
+
   return (
     <div className='monthlyBill'>
       <NavBar className='nav' backArrow={false}>
