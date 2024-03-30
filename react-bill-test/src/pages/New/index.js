@@ -4,9 +4,12 @@ import './index.scss'
 import classNames from 'classnames'
 import { billListData } from '@/contants'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react';
 
 const New = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  // 1. 准备一个控制收入支出的状态
+  const [billtype, setBillType] = useState('pay'); // pay->支出 income->收入
   return (
     <div className="keepAccounts">
       <NavBar className="nav" onBack={() => navigate(-1)}>
@@ -17,13 +20,15 @@ const New = () => {
         <div className="kaType">
           <Button
             shape="rounded"
-            className={classNames('selected')}
-          >
+            className={classNames({'selected': billtype==='pay'})}
+            onClick={() => setBillType('pay')}
+            >
             支出
           </Button>
           <Button
-            className={classNames('')}
+            className={classNames({'selected': billtype==='income'})}
             shape="rounded"
+            onClick={() => setBillType('income')}
           >
             收入
           </Button>
@@ -53,7 +58,7 @@ const New = () => {
       </div>
 
       <div className="kaTypeList">
-        {billListData['pay'].map(item => {
+        {billListData[billtype].map(item => {
           return (
             <div className="kaType" key={item.type}>
               <div className="title">{item.name}</div>
