@@ -1,16 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { request } from "@/utils";
+import { act } from "react-dom/test-utils";
 
 const userStore = createSlice({
   name: "user",
   // 数据初始状态
   initialState: {
-    token: ''
+    token: localStorage.getItem('token_key') || ''
   },
   // 同步修改方法
   reducers: {
     setToken(state, action) {
       state.token = action.payload
+      // localStorage存一份
+      localStorage.setItem('token_key', action.payload)
     }
   }
 });
