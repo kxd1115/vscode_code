@@ -1,15 +1,23 @@
 import './index.scss'
-import { Card, Form, Input, Button } from 'antd'
+import { Card, Form, Input, Button, message } from 'antd'
 import logo from '@/assets/logo.png';
 import { fetchLogin } from '@/store/modules';
 import { UseDispatch, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 const Login = () => {
-  const dispatch = useDispatch()
-  const onFinish = (values) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const onFinish = async (values) => {
     console.log('Sucess:', values);
     // 触发异步action fetchLogin
-    dispatch(fetchLogin(values));
+    await dispatch(fetchLogin(values));
+    // 1. 跳转到首页
+    navigate('/');
+    // 2. 提示用户登录成功
+    // ant-design组件提供的方法mmessage
+    message.success('登录成功');
   }
   return (
     <div className="login">
