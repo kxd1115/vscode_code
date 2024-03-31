@@ -2,9 +2,8 @@ import './index.scss'
 import { Card, Form, Input, Button, message } from 'antd'
 import logo from '@/assets/logo.png';
 import { fetchLogin } from '@/store/modules';
-import { UseDispatch, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 const Login = () => {
   const dispatch = useDispatch();
