@@ -1,10 +1,15 @@
 import './index.scss'
 import { Card, Form, Input, Button } from 'antd'
-import logo from '@/assets/logo.png'
+import logo from '@/assets/logo.png';
+import { fetchLogin } from '@/store/modules';
+import { UseDispatch, useDispatch } from 'react-redux';
 
 const Login = () => {
+  const dispatch = useDispatch()
   const onFinish = (values) => {
     console.log('Sucess:', values);
+    // 触发异步action fetchLogin
+    dispatch(fetchLogin(values));
   }
   return (
     <div className="login">
@@ -14,7 +19,7 @@ const Login = () => {
         {/* 失焦时提示 */}
         <Form validateTrigger='onBlur' onFinish={onFinish}>
           <Form.Item
-            name='username'
+            name='mobile'
             rules={[
               // 多条校验逻辑，按顺序依次校验，且多条件必须都通过
               {
@@ -35,6 +40,7 @@ const Login = () => {
               {
                 required: true,
                 message: '请输入验证码!'
+                // 这里测试只能使用246810
               }
             ]}
           >
