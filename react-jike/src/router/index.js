@@ -1,5 +1,5 @@
 // 路由配置
-import { Login } from "@/pages/Login";
+import Login from "@/pages/Login";
 import { Layout } from "@/pages/Layout";
 
 import { createBrowserRouter } from 'react-router-dom';
