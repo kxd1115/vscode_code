@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     element: <AuthRoute> <Layout /></AuthRoute>,
     children: [
       {
-        path: '/home',
+        path: '/',
         index: true, // 设置为默认二级路由
         element: <Home></Home>
       },
