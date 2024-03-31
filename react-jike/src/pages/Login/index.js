@@ -3,16 +3,41 @@ import { Card, Form, Input, Button } from 'antd'
 import logo from '@/assets/logo.png'
 
 const Login = () => {
+  const onFinish = (values) => {
+    console.log('Sucess:', values);
+  }
   return (
     <div className="login">
       <Card className="login-container">
         <img className="login-logo" src={logo} alt="" />
         {/* 登录表单 */}
-        <Form>
-          <Form.Item>
+        {/* 失焦时提示 */}
+        <Form validateTrigger='onBlur' onFinish={onFinish}>
+          <Form.Item
+            name='username'
+            rules={[
+              // 多条校验逻辑，按顺序依次校验，且多条件必须都通过
+              {
+                required: true,
+                message: '请输入手机号!'
+              },
+              {
+                pattern: /^1[3-9]\d{9}$/, // 验证手机号是否正确
+                message: '请输入正确的手机号!'
+              },
+            ]}
+          >
             <Input size="large" placeholder="请输入手机号" />
           </Form.Item>
-          <Form.Item>
+          <Form.Item
+            name='code'
+            rules={[
+              {
+                required: true,
+                message: '请输入验证码!'
+              }
+            ]}
+          >
             <Input size="large" placeholder="请输入验证码" />
           </Form.Item>
           <Form.Item>
