@@ -157,6 +157,12 @@
       "type": "pay",
       "money": 0,
       "useFor": ""
+    },
+    {
+      "id": "67ff",
+      "type": "pay",
+      "money": 0,
+      "useFor": ""
     }
   ]
 }

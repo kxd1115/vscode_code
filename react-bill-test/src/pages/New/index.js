@@ -24,6 +24,7 @@ const New = () => {
   const dispatch = useDispatch();
   // 保存账单
   const saveBill = () => {
+    if (money === 0) return;
     // 收集数据
     const data = {
       type: billtype,
