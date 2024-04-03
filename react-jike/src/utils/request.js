@@ -1,6 +1,7 @@
 // axios的封装处理
 import axios from "axios";
-import { getToken } from "./token";
+import { getToken, removeToken } from "./token";
+import router from "@/router";
 
 const request = axios.create({
   // 实际项目中，这里的根域名根据环境自动选择，不需要写死
@@ -35,7 +36,13 @@ request.interceptors.response.use((response)=> {
 }, (error)=> {
   // 超出 2xx 范围的状态码都会触发该函数。
   // 对响应错误做点什么
-  return Promise.reject(error)
+  // 监控401 token失效
+  if (error.response.status === 401){
+    removeToken();             // 移除本地token
+    router.navigate('/login'); // 跳转
+    window.location.reload(); // 刷新页面
+  }
+  return Promise.reject(error);
 })
 
 export { request };

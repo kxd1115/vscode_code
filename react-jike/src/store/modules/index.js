@@ -5,11 +5,12 @@ const userStore = createSlice({
   name: "user",
   // 数据初始状态
   initialState: {
-    token: getToken() || '',
+    token: getToken() || '', // 如果本地有，则直接使用
     userInfo: {},
   },
   // 同步修改方法
   reducers: {
+    // 存储token
     setToken(state, action) {
       state.token = action.payload;
       // localStorage存一份
@@ -21,9 +22,9 @@ const userStore = createSlice({
     },
     // 清理用户信息
     clearUserInfo(state) {
-      state.token = '';
-      state.userInfo = {};
-      removeToken();
+      state.token = '';    // 清除token
+      state.userInfo = {}; // 清除个人信息
+      removeToken(); // 清除在本地localStorage中的token
     }
   }
 });

@@ -54,7 +54,7 @@ const GeekLayout = () => {
 
   // 退出登录确认回调
   const onConfirm = () => {
-    dispatch(clearUserInfo()); // 清除个人信息
+    dispatch(clearUserInfo()); // 退出登录, 清除个人信息
     navigate('/login'); // 跳转回登录页
   };
 
