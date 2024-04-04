@@ -50,6 +50,13 @@ const Publish = () => {
     // 2. 调用接口提交
     createArticleAPI(reqDate);
   };
+
+  // 上传回调
+  const [imageList, setImageList] = useState([]);
+  const onChange = (value) => {
+    console.log('正在上传中', value);
+    setImageList(value.fileList);
+  }
   return (
     <div className="publish">
       <Card
@@ -83,6 +90,28 @@ const Publish = () => {
               {/* value属性在用户选中之后，会自动收集起来作为接口的提交字段 */}
               {channelList.map(item => <Option key={item.id} value={item.id}>{item.name}</Option>)}
             </Select>
+          </Form.Item>
+          <Form.Item label="封面">
+          <Form.Item name="type">
+              <Radio.Group>
+                <Radio value={1}>单图</Radio>
+                <Radio value={3}>三图</Radio>
+                <Radio value={0}>无图</Radio>
+              </Radio.Group>
+            </Form.Item>
+            <Upload
+              // 决定选择文件框的外观样式 
+              listType="picture-card"
+              // 控制显示上传列表
+              showUploadList
+              action={'http://geek.itheima.net/v1_0/upload'}
+              name='image'
+              onChange={onChange}
+            >
+              <div style={{ marginTop: 8 }}>
+                <PlusOutlined />
+              </div>
+            </Upload>
           </Form.Item>
           <Form.Item
             label="内容"
