@@ -43,6 +43,7 @@ const Publish = () => {
     };
     // 2. 调用接口提交
     createArticleAPI(reqDate);
+    message.success("发布成功");
   };
 
   // 上传回调
