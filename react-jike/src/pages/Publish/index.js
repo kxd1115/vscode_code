@@ -57,6 +57,13 @@ const Publish = () => {
     console.log('正在上传中', value);
     setImageList(value.fileList);
   }
+
+  // 切换图片封面类型
+  const [imageType, setImageType] = useState(0);
+  const onTypeChange = (e) => {
+    console.log("切换封面了", e.target.value);
+    setImageType(e.target.value);
+  }
   return (
     <div className="publish">
       <Card
@@ -71,7 +78,8 @@ const Publish = () => {
         <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 16 }}
-          initialValues={{ type: 1 }}
+          // 控制表单区域的默认值
+          initialValues={{ type: 0 }}
           onFinish={onFinish}
         >
           <Form.Item
@@ -92,14 +100,14 @@ const Publish = () => {
             </Select>
           </Form.Item>
           <Form.Item label="封面">
-          <Form.Item name="type">
-              <Radio.Group>
+            <Form.Item name="type">
+              <Radio.Group onChange={onTypeChange}>
                 <Radio value={1}>单图</Radio>
                 <Radio value={3}>三图</Radio>
                 <Radio value={0}>无图</Radio>
               </Radio.Group>
             </Form.Item>
-            <Upload
+            {imageType > 0 && <Upload
               // 决定选择文件框的外观样式 
               listType="picture-card"
               // 控制显示上传列表
@@ -111,7 +119,7 @@ const Publish = () => {
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
               </div>
-            </Upload>
+            </Upload>}
           </Form.Item>
           <Form.Item
             label="内容"
