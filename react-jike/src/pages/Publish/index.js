@@ -16,14 +16,12 @@ import './index.scss';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { createArticleAPI } from '@/apis/article';
 import { useChannel } from '@/hooks/useChannel';
 
 const { Option } = Select
 
 const Publish = () => {
-  const dispatch = useDispatch();
   // 获取频道列表
   const { channelList } = useChannel();
 
