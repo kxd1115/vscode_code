@@ -70,11 +70,25 @@ const Publish = () => {
     // 通过id获取数据
     async function getArticleDetail() {
       const res = await getArticleByIdAPI(articleId);
-      form.setFieldsValue(res.data);
+      const data = res.data; // 这样避免每次在使用数据的时候重新查找
+      const { cover } = data; // 避免重复查询
+      // 现在的写法无法回填封面: 数据结构问题 set方法要求直接给type字段{ type } 原始数据中{ cover: {type: 3}}
+      form.setFieldsValue({
+        ...data,
+        type: cover.type
+      });
+      // 回填图片列表
+      setImageType(cover.type);
+      // 显示图片
+      // 必须时一个对象{ url: url }
+      setImageList(cover.images.map(url => {
+        return { url };
+      }))
     }
     getArticleDetail();
     // 调用实例方法，完成回填
   }, [articleId, form])
+  
   return (
     <div className="publish">
       <Card
@@ -128,6 +142,7 @@ const Publish = () => {
               name='image'
               onChange={onChange}
               maxCount={imageType}
+              fileList={imageList} // 绑定当前要显示的图片列表
             >
               <div style={{ marginTop: 8 }}>
                 <PlusOutlined />
