@@ -4,9 +4,12 @@ import Layout from "@/pages/Layout";
 
 import { createBrowserRouter } from 'react-router-dom';
 import { AuthRoute } from "@/components/AuthRoute";
-import Article from "@/pages/Article";
-import Home from "@/pages/Home";
-import Publish from "@/pages/Publish";
+
+// 借助lazy函数对组件进行导入
+import { Suspense, lazy } from "react";
+const Home = lazy(() => import("@/pages/Home"));
+const Article = lazy(() => import("@/pages/Article"));
+const Publish = lazy(() => import("@/pages/Publish"));
 
 const router = createBrowserRouter([
   {
@@ -17,15 +20,15 @@ const router = createBrowserRouter([
       {
         path: '/',
         index: true, // 设置为默认二级路由
-        element: <Home></Home>
+        element: <Suspense fallback={'加载中'}><Home></Home></Suspense>
       },
       {
         path: '/article',
-        element: <Article></Article>
+        element: <Suspense fallback={'加载中'}><Article></Article></Suspense>
       },
       {
         path: '/publish',
-        element: <Publish></Publish>
+        element: <Suspense fallback={'加载中'}><Publish></Publish></Suspense>
       },
     ]
   },
