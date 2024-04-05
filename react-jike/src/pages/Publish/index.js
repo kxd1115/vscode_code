@@ -16,7 +16,7 @@ import './index.scss';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { useEffect, useState } from 'react';
-import { createArticleAPI, getArticleByIdAPI } from '@/apis/article';
+import { createArticleAPI, getArticleByIdAPI, updateArticleAPI } from '@/apis/article';
 import { useChannel } from '@/hooks/useChannel';
 
 const { Option } = Select
@@ -32,18 +32,33 @@ const Publish = () => {
     if (imageList.length !== imageType) return message.warning('封面类型和图片数量不匹配');
     console.log(formValue);
     // 1. 按照接口文档格式处理收集到的表单数据
-    const reqDate = {
+    const reqData = {
       title: title,
       content: content,
       cover: {
         type: imageType, // 当前封面模式
-        images: imageList.map(item => item.response.data.url) // 图片列表
+        // 这里的url处理逻辑，只是新增时的逻辑
+        // 编辑的时候也需要处理
+        images: imageList.map(item => {
+          if (item.response) {
+            return item.response.data.url;
+          } else {
+            return item.url;
+          }
+        }) // 图片列表
       },
       channel_id: channel_id
     };
     // 2. 调用接口提交
-    createArticleAPI(reqDate);
-    message.success("发布成功");
+    // 处理：调用新增 OR 更新接口 : id
+    if (articleId) {
+      // 更新接口
+      updateArticleAPI({...reqData, id: articleId});
+      message.success("更新成功");
+    } else {
+      createArticleAPI(reqData);
+      message.success("发布成功");
+    }
   };
 
   // 上传回调
@@ -169,7 +184,7 @@ const Publish = () => {
           <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
-                发布文章
+                {`${articleId ? "更新" : "发布"}`}文章
               </Button>
             </Space>
           </Form.Item>
