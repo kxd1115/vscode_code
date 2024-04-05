@@ -23,12 +23,3 @@ git add .
 git commit -m "commit msg"
 git push
 ```
-
-### npm安装过程中遇到的问题
-```shell
-#npm code ERESOLVE
-#npm ERR! ERESOLVE could not resolve
-
-# 尝试在npm install或npm update时附带 --force 参数来忽略冲突
-
-```
