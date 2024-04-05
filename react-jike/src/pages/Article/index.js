@@ -77,18 +77,47 @@ const Article = () => {
       }
     }
   ]
+  
+  // 筛选功能: 疑问？为什么我的筛选无法生效
+  // 1. 准备参数
+  const [reqData, setReqData] = useState({
+    status: '',
+    channel_id: '',
+    begin_pubdate: '',
+    end_pubdate: '',
+    page: 1,
+    per_page: 4
+  });
 
   // 获取文章列表
   const [list, setList] = useState([]);
   const [count, setCount] = useState(0);
-  async function getList() {
-    const res = await getArticleListAPI();
+  
+  async function getList(data) {
+    const res = await getArticleListAPI(data);
     setList(res.data.results);
     setCount(res.data.total_count);
   }
+
   useEffect(() => {
-    getList();
-  }, [])
+    getList(reqData);
+  }, [reqData]) // 传入依赖项，当reqData发生变化时，自动重新运行副作用函数
+  
+  // 2. 获取当前的筛选数据
+  const onFinish = (formValue) => {
+    console.log(formValue);
+    // 3. 把表单收集到的数据，放到参数中（不可变的方式）
+    setReqData({
+      ...reqData,
+      channel_id: formValue.channel_id,
+      status: formValue.status,
+      begin_pubdate: formValue.date[0].format('YYYY-MM-DD'),
+      end_pubdate: formValue.date[1].format('YYYY-MM-DD'),
+    })
+    // 4. 重新拉取文章列表，逻辑复用
+    // reqData依赖项发生变化，重复执行副作用函数
+  }
+
   return (
     <div>
       <Card
@@ -100,7 +129,7 @@ const Article = () => {
         }
         style={{ marginBottom: 20 }}
       >
-        <Form initialValues={{ status: '' }}>
+        <Form initialValues={{ status: '' }} onFinish={onFinish}>
           <Form.Item label="状态" name="status">
             <Radio.Group>
               <Radio value={''}>全部</Radio>
