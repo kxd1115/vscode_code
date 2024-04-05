@@ -118,6 +118,16 @@ const Article = () => {
     // reqData依赖项发生变化，重复执行副作用函数
   }
 
+  // 分页
+  const onPageChange = (page) => {
+    console.log(page);
+    // 修改参数依赖项引发数据的重新获取 列表渲染
+    setReqData({
+      ...reqData,
+      page: page
+    })
+  }
+
   return (
     <div>
       <Card
@@ -162,7 +172,11 @@ const Article = () => {
       </Card>
       {/* 表格区域 */}
       <Card title={`根据筛选条件共查询到${count}条结果：`}>
-        <Table rowKey="id" columns={columns} dataSource={list} />
+        <Table rowKey="id" columns={columns} dataSource={list} pagination={{
+          total: count,
+          pageSize: reqData.per_page,
+          onChange: onPageChange
+        }} />
       </Card>
     </div>
   )
