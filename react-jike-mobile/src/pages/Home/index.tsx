@@ -11,11 +11,13 @@ const Home = () => {
     <div>
       <div className='tabContainer'>
         {/*tab区域*/}
-        <Tabs>
+        <Tabs defaultActiveKey={'0'}>
           { channels.map(item => (
             <Tabs.Tab title={item.name} key={item.id}>
               {/* list组件 */}
-              <HomeList channelId={'' + item.id}></HomeList>
+              <div className='listContainer'>
+                <HomeList channelId={'' + item.id}></HomeList>
+              </div>
             </Tabs.Tab>
           ))}
         </Tabs>

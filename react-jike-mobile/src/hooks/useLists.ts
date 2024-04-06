@@ -31,6 +31,7 @@ function useLists(props: Props) {
   return {
     channelId,
     listRes,
+    setListRes,
   }
 }
 
