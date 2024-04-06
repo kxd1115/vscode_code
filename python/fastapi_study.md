@@ -14,8 +14,20 @@ pip install uvicorn
 #
 
 # 启动项目
-unvicorn main:app reload
+# main 代表要启动的文件名
+# app 定义的FastAPI类名
+uvicorn main:app --reload
 ```
+
+### 测试软件
+```shell
+sudo apt update
+sudo apt install snapd
+
+# 通过snap安装
+snap install postman
+```
+postmap
 
 #### hello world
 
