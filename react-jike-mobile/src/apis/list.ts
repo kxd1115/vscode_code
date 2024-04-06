@@ -39,6 +39,11 @@ export type ListRes = {
   pre_timestamp: string
 }
 
+// channelId 用于tab和list一一对应
+export type Props = {
+  channelId: string
+};
+
 // 请求参数的对应数据类型
 type ReqParams = {
   channel_id: string,
