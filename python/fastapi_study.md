@@ -1,3 +1,59 @@
+## 请求体
+
+请求体: 用来从客户端发送数据给API
+响应体: API发送给客户端的数据
+
+### HTTP协议
+
+* 基于TCP/IP协议
+* 基于请求：响应模式
+  * 请求从客户端发送后，服务端响应请求并返回
+* 无状态保存
+  * 不进行状态保存(协议自身不对请求和响应之间的通信状态进行保存)
+* 短链接
+
+#### HTTP请求协议和响应协议
+HTTP请求和响应
+* 请求协议
+  * 请求首行
+    * 请求方式: `get/post`...
+    * 请求路径: IP地址
+    * 请求协议: `HTTP/1.1`...
+  * 请求头
+    * content-type(告诉服务器我请求的数据的格式，不同的content-type，严格对应不同的请求体数据格式)
+      * application/json
+      * text/plain
+      * text/html
+    * user-agent
+    * ...
+  * 请求体(username/password...)
+    * 只有POST请求才有请求体
+* 响应协议
+  * 响应首行
+    * 响应协议
+    * 状态码
+      * 200
+      * 4XX
+      * 5XX
+      * 3XX
+  * 响应头
+    * 响应日期
+    * content-type: (告诉客户端我返回的数据的格式，严格对应响应体中的数据格式)
+    * content-length
+    * ...
+  * 响应体
+    * 
+#### restful开发规范
+
+应用程序编程接口(API接口)，就是应用程序对外提供了一个操作数据的入口，可以使函数或者类方法，也可以是一个url地址或者一个网络地址
+
+目前主要的接口实现规范：
+
+* restful: 表述性状态转移，适用于前后端分离的应用模式中
+  * 面向资源开发
+  * 对于数据资源，分别使用`POST/GET/UPDATE/DELETE/PUT`等请求动作来表达对数据的增删改查
+* RPC
+
 ## 依赖安装
 
 ```shell
@@ -61,7 +117,70 @@ http://127.0.0.1:8000/redoc
 @app.delete("/")
 ```
 
-## 路径参数
+关于路径请求中的一些参数
+```py
+from fastapi import FastAPI # type: ignore
+import uvicorn # type: ignore
+
+app = FastAPI()
+
+# 使用装饰器进行路由映射
+# 路径操作装饰器
+@app.get("/")
+# 路径操作函数
+async def hello():
+  return {"user_id":1001}
+
+@app.post(
+    "/items", 
+    # 关于这个接口的标题
+    tags = ['这是POST测试接口'],
+    # 关于这个接口的小节说明
+    summary = "this is items测试 sumary",               
+    # 这是关于这个接口的请求说明
+    description = "this is items测试 description....",
+    # 这是关于这个接口的响应说明
+    response_description = "this is items测试 response_description....",
+    # 接口是否废弃
+    deprecated = False
+)
+async def test():
+  return {"items": "items数据"}
+```
+
+### include_router
+* 使用APIRouter创建子路由对象
+```py
+# apps/Users/urs.py
+# 使用APIRouter为该模块创建路径操作
+from fastapi import APIRouter
+
+# 创建子路由对象
+user = APIRouter()
+
+@user.get('/login')
+async def user_login():
+  return {"user": "login"}
+```
+* 在main.py中通过include_router获取子路由
+```py
+from fastapi import FastAPI # type: ignore
+import uvicorn              # type: ignore
+
+# 导入子路由接口对象
+from apps.Users.urls import user
+
+app = FastAPI()
+
+# 使用include_router分发子路由
+# 通过prefix设置跳转到子路由的总路径
+# 通过tags设置子路由接口的名称
+app.include_router(user, prefix="/user", tags=['用户接口'])
+```
+
+## 请求与响应
+
+### 路径参数
 
 ```py
 @app.get("/items/{item_id}")
@@ -70,15 +189,8 @@ async def read_item(item_id:str):
 
 # http://127.0.0.1:8000/items/foo
 ```
-
-### Pydantic
-
-用于数据校验
-
 #### 顺序很重要
-
-路径操作是按照顺序依次运行的
-
+路径操作是按照顺序依次从上往下执行的
 ```py
 # /users/me需要在/users/{user_id}的前面
 @app.get("/users/me")
@@ -90,39 +202,10 @@ async def read_user(user_id:str):
     return {"user_id": user_id}
 ```
 
-#### 预设值
-
-使用`Enum`，将变量声明为枚举类型
-
-```py
-from fastapi import FastAPI
-from enum import Enum
-
-app = FastAPI()
-
-# 继承自str的枚举类型，枚举变量全部是字符串
-class ModelName(str, Enum):
-    alexnet = "alexnet"
-    resnet = "resnet"
-    lenet = "lenet"
-
-@app.get("/models/{model_name}")
-async def get_model(model_name: ModelName):
-    if model_name is ModelName.alexnet:
-        return {"model_name": model_name, "message": 'Deep Learning FTW!'}
-    # if model_name.value == "lenet":
-    if model_name is ModelName.lenet:
-        return {"model_name": model_name, "message": "LeCNN all the images"}
-    return {"model_name": model_name, "message": "Have some residuals"}
-# http://127.0.0.1:8000/models/alexnet
-```
-
-## 查询参数
-
+### 查询参数
 查询参数不是路径的固定部分，是可选的，并且可以设置默认值
 
 #### 默认值
-
 * 下面的示例中，`skip=0`和`limit=10`是查询参数的默认值
 
 ```py
@@ -154,62 +237,34 @@ async def read_item(item_id:str, q:str | None = None):
         return {"item_id": item_id, "q": q}
     return {"item_id": item_id}
 ```
-> 以上是看fastapi官方文档学习的部分
----
-> 以下时看视频学习的部分
 
-## 请求体
 
-请求体: 用来从客户端发送数据给API
-响应体: API发送给客户端的数据
 
-### HTTP协议
 
-* 基于TCP/IP协议
-* 基于请求：响应模式
-  * 请求从客户端发送后，服务端响应请求并返回
-* 无状态保存
-  * 不进行状态保存(协议自身不对请求和响应之间的通信状态进行保存)
-* 短链接
+#### 预设值
 
-#### HTTP请求协议和响应协议
-HTTP请求和响应
-* 请求协议
-  * 请求首行
-    * 请求方式: `get/post`...
-    * 请求路径: IP地址
-    * 请求协议: `HTTP/1.1`...
-  * 请求头
-    * content-type(告诉服务器我请求的数据的格式，不同的content-type，严格对应不同的请求体数据格式)
-      * application/json
-      * text/plain
-      * text/html
-    * user-agent
-    * ...
-  * 请求体(username/password...)
-    * 只有POST请求才有请求体
-* 响应协议
-  * 响应首行
-    * 响应协议
-    * 状态码
-      * 200
-      * 4XX
-      * 5XX
-      * 3XX
-  * 响应头
-    * 响应日期
-    * content-type: (告诉客户端我返回的数据的格式，严格对应响应体中的数据格式)
-    * content-length
-    * ...
-  * 响应体
-    * 
-#### restful开发规范
+使用`Enum`，将变量声明为枚举类型
 
-应用程序编程接口(API接口)，就是应用程序对外提供了一个操作数据的入口，可以使函数或者类方法，也可以是一个url地址或者一个网络地址
+```py
+from fastapi import FastAPI
+from enum import Enum
 
-目前主要的接口实现规范：
+app = FastAPI()
 
-* restful: 表述性状态转移，适用于前后端分离的应用模式中
-  * 面向资源开发
-  * 对于数据资源，分别使用`POST/GET/UPDATE/DELETE/PUT`等请求动作来表达对数据的增删改查
-* RPC
+# 继承自str的枚举类型，枚举变量全部是字符串
+class ModelName(str, Enum):
+    alexnet = "alexnet"
+    resnet = "resnet"
+    lenet = "lenet"
+
+@app.get("/models/{model_name}")
+async def get_model(model_name: ModelName):
+    if model_name is ModelName.alexnet:
+        return {"model_name": model_name, "message": 'Deep Learning FTW!'}
+    # if model_name.value == "lenet":
+    if model_name is ModelName.lenet:
+        return {"model_name": model_name, "message": "LeCNN all the images"}
+    return {"model_name": model_name, "message": "Have some residuals"}
+# http://127.0.0.1:8000/models/alexnet
+```
+
