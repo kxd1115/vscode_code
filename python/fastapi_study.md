@@ -324,3 +324,8 @@ async def get_model(model_name: ModelName):
 # http://127.0.0.1:8000/models/alexnet
 ```
 
+#### 使用pydantic进行数据校验 
+
+### 请求体数据
+
+
