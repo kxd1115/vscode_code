@@ -204,6 +204,23 @@ async def read_user(user_id:str):
 
 ### 查询参数
 查询参数不是路径的固定部分，是可选的，并且可以设置默认值
+在请求头中问号分隔符(?)后面的部分就是查询参数
+```py
+from fastapi import APIRouter
+
+select = APIRouter()
+
+@select.get('/select')
+# 当声明的参数不是路径参数时，操作函数会自动把它解释为查询参数
+# 有默认参数时，以为该参数是可选的/非必填的
+# 此时没有声明路径参数，这里的三个参数都时查询参数
+async def get_user(kd, xl=None, gj=None): 
+  return {
+    "kd": kd,
+    "xl": xl,
+    "gj": gj
+  }
+```
 
 #### 默认值
 * 下面的示例中，`skip=0`和`limit=10`是查询参数的默认值
@@ -238,8 +255,47 @@ async def read_item(item_id:str, q:str | None = None):
     return {"item_id": item_id}
 ```
 
+#### Union
+使用Union为变量设置多个可用类型
+```py
+Union[str, int]
+```
+#### OPtional
+类似于Union的简写版本，当数据类型中有可能是None时，可以直接简写
+```py
+Optional[str]
+# 等同于
+Union[None, str]
+```
 
+#### 额外的校验: Query
+通过Query，设置查询参数的默认值，同时设置默认长度(max_length)
+```py
+from fastapi import APIRouter, Query
+from typing import Union, Optional
 
+typeDefault = Query(
+  default = None,
+  title = 'Query String',
+  min_length = 3,
+  max_length = 50,
+  pattern = '^fixedquery$'
+)
+
+typeRes = Union[None, str, int]
+
+select = APIRouter()
+
+@select.get('/select/{kd}')
+# 当声明的参数不是路径参数时，操作函数会自动把它解释为查询参数
+# 有默认参数时，以为该参数是可选的/非必填的
+async def get_user(kd, xl=None, gj: typeRes = typeDefault):
+  return {
+    "kd": kd,
+    "xl": xl,
+    "gj": gj
+  }
+```
 
 #### 预设值
 
