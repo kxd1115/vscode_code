@@ -1194,7 +1194,7 @@ export default defineConfig({
 ```
 
 * 路径联想
-`tsconfig.json`文件中
+`tsconfig.json`or `jsconfig.json`文件中
 ```js
 // 文件目录索引
 "baseUrl": ".",

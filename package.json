@@ -3,6 +3,7 @@
     "classnames": "^2.5.1",
     "install": "^0.13.0",
     "loadsh": "^0.0.4",
-    "python": "^0.0.4"
+    "python": "^0.0.4",
+    "vite": "^5.2.8"
   }
 }
