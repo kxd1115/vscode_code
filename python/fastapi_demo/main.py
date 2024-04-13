@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 import uvicorn
 from fastapi.staticfiles import StaticFiles
+import ssl
+from tortoise import Tortoise
+
+# 导入ORM配置文件
+from database.settings import TORTOISE_ORM
 
 from routers.datas import datas
 from routers.files import files
@@ -13,6 +18,12 @@ from routers.user02 import user2
 
 
 app = FastAPI()
+
+  # fastapi一旦运行，register_tortoise则同时开始执行，实现监控
+async def run():
+  await Tortoise.init(
+    config = TORTOISE_ORM # 放在单独的配置文件中
+  )
 
 app.mount("/statics", StaticFiles(directory="statics"))
 

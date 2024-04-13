@@ -469,3 +469,23 @@ async def read_item(item_id: str):
 ```
 
 ### ORM
+这里使用tortoise
+```shell
+pip install tortoise-orm
+```
+
+#### aerich
+* 一个ORM迁移工具，需要结合tortoise异步ORM框架使用
+安装aerich
+```shell
+pip install aerich
+```
+* 初始化配置
+```shell
+aerich init -t settings.TORTOISE_ORM # 配置文件位置
+```
+* 初始化数据库
+```shell
+aerich init-db
+```
+
