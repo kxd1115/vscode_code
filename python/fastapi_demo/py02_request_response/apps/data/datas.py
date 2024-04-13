@@ -19,6 +19,16 @@ class User(BaseModel):
     assert value.isalpha(), "name must be alpha"
     return value
 
+class Data(BaseModel):
+  # 将若干角色放到同一个列表，组成成员变量
+  data: List[User]
+
+# 获取User
+@datas.post('/user')
+async def user(user: User):
+  return user
+
+# 获取User列表
 @datas.post('/data')
-async def data(data: User):
+async def data(data: Data):
   return data
