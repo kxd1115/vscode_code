@@ -329,3 +329,70 @@ async def get_model(model_name: ModelName):
 ### 请求体数据
 
 
+#### form表单数据
+使用fastapi中的From组件接收表单数据
+```shell
+pip install python-multipart
+```
+
+```py
+from fastapi import APIRouter, Form
+
+form = APIRouter()
+
+@form.get("/form")
+async def get_form(username:str = Form, password:str = Form):
+  return {
+    "username": username
+  }
+```
+
+#### 文件上传
+
+```py
+from fastapi import APIRouter, File, UploadFile
+from  typing import List
+import os
+
+file = APIRouter()
+
+@file.post("/file")
+async def post_file(file: bytes = File()):
+    # 适合小文件上传
+    return {
+      "file": file
+    }
+
+@file.post("/files")
+async def post_files(files: List[bytes] = File()):
+    # 适合小文件上传
+    return {
+      "file": len(files)
+    }
+
+# 上传单个文件
+@file.post("/uploadFile")
+async def post_file(file: UploadFile):
+    # 适合大文件上传，用的比较多
+    
+    path = os.path.join('imgs', file.filename)
+    # 文件保存
+    with open(path, 'wb') as f:
+      for line in file.file:
+        f.write(line)
+    
+    return {
+      "file": file.filename
+    }
+  
+# 上传多个文件
+@file.post("/uploadFiles")
+async def post_files(files: List[UploadFile]):
+    # 适合大文件上传，用的比较多
+    
+    return {
+      "names": [files.filename for files in files]
+    }
+```
+
+#### Request对象
