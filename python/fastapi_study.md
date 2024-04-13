@@ -414,3 +414,56 @@ async def request_post(request: Request):
 ```
 
 #### 请求静态文件
+```py
+from fastapi.staticfiles import StaticFiles
+
+app.mount("/statics", StaticFiles(directory="statics"))
+
+# http://127.0.0.1:8000/statics/common.css
+```
+
+#### 响应模型相关参数
+
+* 通过response_model隐藏关键信息
+```py
+# 响应格式
+class UserIn(BaseModel):
+  username: str
+  password: str
+  email: EmailStr
+  full_name: Union[str, None] = None
+
+# 返回格式
+class UserOut(BaseModel):
+  username: str
+  email: EmailStr
+  full_name: Union[str, None] = None
+
+# 通过response_model隐藏关键信息
+@user.post('/user', response_model=UserOut)
+async def response(user: UserIn):
+  return user
+```
+
+* `response_model_exclude_unset`
+通过response_model_exclude_unset=True，排除预设的值
+```py
+class Item(BaseModel):
+  name: str
+  description: Union[str, None] = None
+  price: float = 10.5
+  tags: List[str] = []
+
+items = {
+  "foo": {"name": "Foo", "price": 50.2},
+  "bar": {"name": "Bar", "description": "The bartenders", "price": 62, "tags": ["foo", "bar"]},
+  "baz": {"name": "Baz", "description": None, "price": 50.2, "tags": []},
+}
+
+# 排除预设的值 response_model_exclude_unset=True 
+# 排除为None的值 response_model_exclude_none=True
+# 排除为默认值的值 response_model_exclude_defaults=True
+@user.get('/items/{item_id}', response_model=Item, response_model_exclude_unset=True )
+async def read_item(item_id: str):
+  return items[item_id]
+```
