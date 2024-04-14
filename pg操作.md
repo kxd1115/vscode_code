@@ -34,6 +34,7 @@ sudo service postgresql restart
 
 ### 修改postgres密码 
 ```shell
+sudo -i -u postgres # 切换到该账户
 # 配置linux的postgres用户
 # PostgreSQL默认安装，会创建一个默认的linux用户postgres，设置postgres用户密码
 

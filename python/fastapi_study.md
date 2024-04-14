@@ -471,7 +471,9 @@ async def read_item(item_id: str):
 ### ORM
 这里使用tortoise
 ```shell
+pip install tortoise
 pip install tortoise-orm
+pip install asyncpg # 针对PG库
 ```
 
 #### aerich

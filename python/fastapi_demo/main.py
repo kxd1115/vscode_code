@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 import uvicorn
+import asyncpg
 from fastapi.staticfiles import StaticFiles
 import ssl
 from tortoise import Tortoise
@@ -22,8 +23,10 @@ app = FastAPI()
   # fastapi一旦运行，register_tortoise则同时开始执行，实现监控
 async def run():
   await Tortoise.init(
-    config = TORTOISE_ORM # 放在单独的配置文件中
+    TORTOISE_ORM # 放在单独的配置文件中
   )
+  await Tortoise.generate_schemas()
+  pg_client = Tortoise.get_connection("pg_conn")
 
 app.mount("/statics", StaticFiles(directory="statics"))
 
