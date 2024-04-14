@@ -488,6 +488,24 @@ aerich init -t settings.TORTOISE_ORM # 配置文件位置
 ```
 * 初始化数据库
 ```shell
+# 将数据库配置信息添加到settings.py中
+
+# 初始化数据库，一般情况下只需要运行一次
 aerich init-db
+
+# 迁移数据库（更新数据模型）
+# 当在ORM模型中新增字段或者修改字段时
+aerich migrate 
+# aerich migrate --name add_column 可以给本次迁移添加名字
+# 这个操作仅仅是生成SQL文件，并没有正式的在数据库中进行操作
+# 如果更新或者降级，需要执行接下来的操作
+aerich upgrade
+# OR
+aerich downgrade
+
+# 查看历史记录
+aerich history
 ```
+
+#### API接口与RESTFUL规范
 
