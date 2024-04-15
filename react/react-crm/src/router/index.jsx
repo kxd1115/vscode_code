@@ -8,26 +8,24 @@ import Work from '@/pages/Work';
 
 const router = createBrowserRouter([
   {
-    path: '/login',
-    element: <Login></Login>
-  },
-  {
     path: '/',
     element: <Layout></Layout>,
-    children: [
-      {
-        path: '/home',
-        element: <Home></Home>
-      },
-      {
-        path: '/work',
-        element: <Work></Work>
-      },
-      {
-        path: '/user',
-        element: <User></User>
-      },
-    ]
+  },
+  {
+    path: '/home',
+    element: <Home></Home>
+  },
+  {
+    path: '/work',
+    element: <Work></Work>
+  },
+  {
+    path: '/user',
+    element: <User></User>
+  },
+  {
+    path: '/login',
+    element: <Login></Login>
   }
 ]);
 

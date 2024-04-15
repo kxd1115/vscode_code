@@ -3,7 +3,6 @@ from database.models import Student
 
 studentAPI = APIRouter()
 
-
 @studentAPI.get("/")
 async def get_students():
     # (1) 查询所有学生 all()
@@ -25,7 +24,7 @@ async def get_students():
     
     students = await Student.all().values('id', 'name', 'clas_id')
     return {
-      "操作": students
+      "stu": students
     }
 
 @studentAPI.get("/{student_id}")
