@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 from database.models import Student
+from pydantic import BaseModel
+from typing import List
 
 studentAPI = APIRouter()
 
@@ -33,11 +35,32 @@ async def get_student(student_id: int):
       "操作": f"查看id={student_id}的学生"
     }
 
-@studentAPI.post("/{student_id}")
-async def add_student(student_id: int):
-    return {
-      "操作": "添加id={student_id}的学生"
-    }
+class studentIn(BaseModel):
+    name: str
+    pwd: str
+    clas_id: int
+    course_ud: int
+
+@studentAPI.post("/")
+async def add_student(student_in: studentIn):
+  
+    # 插入到数据库，仅针对一对一的数据
+    # 方式1
+    # student = Student(
+    #   name = student_in.name,
+    #   pwd = student_in.pwd,
+    #   clas_id = student_in.clas_id,
+    # )
+    # await student.save() # 完成数据插入，数据库操作需要加await
+    
+    # 方式2
+    student = await Student.create(
+      name = student_in.name,
+      pwd = student_in.pwd,
+      clas_id = student_in.clas_id,
+    )
+    
+    return student
 
 @studentAPI.put("/{student_id}")
 async def put_student(student_id: int):
