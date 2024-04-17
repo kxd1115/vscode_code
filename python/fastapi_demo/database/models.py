@@ -5,7 +5,7 @@ from tortoise import fields
 class Student(Model):
     # pk = True 设置为主键
     # description 字段描述
-    id = fields.IntField(pk=True) # 数字类型
+    id = fields.IntField(pk=True) # 数字类型  # 使用auto_increment=True定义该字段为自增字段
     name = fields.CharField(max_length=32, description='姓名') # 字符串类型
     pwd = fields.CharField(max_length=32, description='密码')  # 数字类型
     

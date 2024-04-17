@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from database.models import *
 from pydantic import BaseModel
 from typing import List
+from fastapi.exceptions import HTTPException
 
 studentAPI = APIRouter()
 
@@ -24,19 +25,33 @@ async def get_students():
     # students = await Student.filter(clas_id__in=[1,2]).values('id', 'name', 'clas_id') # 查询1班和2班的学生
     # 通过values方法，返回一个由对象组成的列表, 包含对应列出的key
     
-    students = await Student.all().values('id', 'name', 'clas_id')
+    # (6) 一对多查询，多对多查询
+    stu = await Student.get(name="Dennis")
+    stu_clas = await stu.clas.values('name') # 直接通过1对多键进行查询
+    
+    # students = await Student.all().values('id', 'name', 'clas_id')
+    students = await Student.all().values('name', 'clas__name', "courses__name") # 查询所有学生，并返回对应班级的名称
+    
+    # (7) 多对多查询
+    # courses_all = await stu.courses.all() # 查询单个学生的所有报课信息
+    # stu_courses = await stu.courses.all().values("name", "teacher__name") # 查询单个学生的所有报课信息，对应的老师名字
+    #stu_courses = await stu.courses.all().values("name", "teacher__name") # 查询单个学生的所有报课信息，对应的老师名字， 课程信息
+    # 通过一对多和多对多列进行查询其他表中的信息
+    
     return {
-      "stu": students
+      # "stu": stu,
+      # "clas": stu_clas
+      # "clas__name": students
+      "stu_courses": students
     }
 
 @studentAPI.get("/{student_id}")
 async def get_student(student_id: int):
-    return {
-      "操作": f"查看id={student_id}的学生"
-    }
+    stu = await Student.get(id=student_id)
+    return stu
 
 class studentIn(BaseModel):
-    id: int
+    id: int # 这里由于在初始化的时候没有将ID设置为自增，导致后面更新数据时需要填写id
     name: str
     pwd: str
     clas_id: int
@@ -56,7 +71,7 @@ async def add_student(student_in: studentIn):
     
     # 方式2
     student = await Student.create(
-      id = student_in.id,
+      id = student_in.id, # 遗留错误，这里不应该出现需要填写id的情况
       name = student_in.name,
       pwd = student_in.pwd,
       clas_id = student_in.clas_id, # 一对多的绑定关系
@@ -70,13 +85,30 @@ async def add_student(student_in: studentIn):
     return student
 
 @studentAPI.put("/{student_id}")
-async def put_student(student_id: int):
+async def put_student(student_id: int, student_in: studentIn):
+    data = student_in.dict()
+    courses = data.pop("courses") # 删除多对多字段，并取出该字段
+    await Student.filter(id=student_id).update(**data) # **把字典展开为一个对象
+    
+    # 更新多对多字段
+    edit_stu = await Student.get(id=student_id)
+    choose_courses = await Course.filter(id__in=courses) # 获取学生的选课信息，并填充到Course中
+    
+    # 补充：多对多字段更新，需要先删除再添加
+    # 删除旧的多对多字段
+    await edit_stu.courses.clear()
+    # 添加新的多对多字段
+    await edit_stu.courses.add(*choose_courses)
+    
     return {
       "操作": "更新id={student_id}的学生"
     }
 
 @studentAPI.delete("/{student_id}")
 async def del_student(student_id: int):
+    deleteCount = await Student.filter(id=student_id).delete()
+    if not deleteCount:
+      raise HTTPException(status_code=404, detail=f"学生id={student_id}不存在")
     return {
       "操作": "删除id={student_id}的学生"
     }

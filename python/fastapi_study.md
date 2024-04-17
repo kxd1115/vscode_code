@@ -482,7 +482,7 @@ pip install asyncpg # 针对PG库
 ```shell
 pip install aerich
 ```
-* 初始化配置
+* 初始化配置（只需要使用一次）
 ```shell
 aerich init -t settings.TORTOISE_ORM # 配置文件位置
 ```
