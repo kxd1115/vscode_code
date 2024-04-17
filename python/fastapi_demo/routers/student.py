@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from database.models import Student
+from database.models import *
 from pydantic import BaseModel
 from typing import List
 
@@ -36,10 +36,11 @@ async def get_student(student_id: int):
     }
 
 class studentIn(BaseModel):
+    id: int
     name: str
     pwd: str
     clas_id: int
-    course_ud: int
+    courses: List[int] = []
 
 @studentAPI.post("/")
 async def add_student(student_in: studentIn):
@@ -55,10 +56,16 @@ async def add_student(student_in: studentIn):
     
     # 方式2
     student = await Student.create(
+      id = student_in.id,
       name = student_in.name,
       pwd = student_in.pwd,
-      clas_id = student_in.clas_id,
+      clas_id = student_in.clas_id, # 一对多的绑定关系
+      #course = student_in.course
     )
+    
+    # 补充：多对多的绑定关系
+    choose_courses = await Course.filter(id__in=student_in.courses) # 获取学生的选课信息，并填充到Course中
+    await student.courses.add(*choose_courses) # 使用*把列表展开
     
     return student
 
