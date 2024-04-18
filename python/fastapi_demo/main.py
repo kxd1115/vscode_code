@@ -1,4 +1,5 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.responses import Response
 import uvicorn
 import asyncpg
 from fastapi.staticfiles import StaticFiles
@@ -48,3 +49,19 @@ app.mount("/statics", StaticFiles(directory="statics"))
 # app.include_router(response01, tags=['响应模型'])
 
 app.include_router(studentAPI, prefix='/student', tags=['选课系统学生接口'])
+
+@app.middleware("http")
+async def middleware(request: Request, call_next):
+    # 请求代码块
+    response = await call_next(request)
+    # 在请求代码块中对所有请求做其他操作
+    # if request.client.host in ["127.0.0.1"]: # 假设当前访问的IP在黑名单中
+    #   return Response(content="visit forbidden")
+    
+    # 权限设置
+    if request.url.path in ['/user']: 
+        return Response(content="visit forbidden")
+    
+    # 响应代码块
+    
+    return response
