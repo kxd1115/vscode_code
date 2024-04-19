@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Request
 from fastapi.responses import Response
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import asyncpg
 from fastapi.staticfiles import StaticFiles
@@ -22,6 +23,18 @@ from routers.student import studentAPI
 
 
 app = FastAPI()
+
+origins = [
+  "http://localhost",
+]
+
+app.add_middleware(
+  CORSMiddleware,
+  allow_origins = origins, # * 代表所有IP
+  allow_credentials = True,  # 是否正常认证
+  allow_methods = ["GET", "POST"],  # 允许的请求类型
+  allow_headers = ["*"] # 自定义限制带的请求头参数
+)
 
 # fastapi一旦运行，register_tortoise则同时开始执行，实现监控
 # async def run():
@@ -65,3 +78,13 @@ async def middleware(request: Request, call_next):
     # 响应代码块
     
     return response
+
+# @app.middleware("http")
+# async def MyCORSMiddleware(request: Request, call_next):
+  
+  
+#     # 响应代码块
+#     response = await call_next(request)
+#     # 不限制请求客户端
+#     response.headers["Access-Control-Allow-Origin"] = "localhost"
+#     return response
