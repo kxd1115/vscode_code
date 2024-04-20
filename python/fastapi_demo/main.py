@@ -28,7 +28,7 @@ origins = [
   "http://localhost",
 ]
 
-app.add_middleware(
+app.add_middleware( 
   CORSMiddleware,
   allow_origins = origins, # * 代表所有IP
   allow_credentials = True,  # 是否正常认证
