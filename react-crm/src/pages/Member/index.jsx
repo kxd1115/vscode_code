@@ -1,7 +1,7 @@
 import ToBeDeveloped from "@/components/ToBeDeveloped";
 
-const User = ()=> {
+const Member = ()=> {
   return <ToBeDeveloped></ToBeDeveloped>
 };
 
-export default User;
+export default Member;

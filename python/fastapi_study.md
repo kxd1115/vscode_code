@@ -484,7 +484,7 @@ pip install aerich
 ```
 * 初始化配置（只需要使用一次）
 ```shell
-aerich init -t settings.TORTOISE_ORM # 配置文件位置
+aerich init -t settings.TORTOISE_ORM # 配置文件位置 
 ```
 * 初始化数据库
 ```shell

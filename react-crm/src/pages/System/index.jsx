@@ -1,5 +1,7 @@
+import ToBeDeveloped from "@/components/ToBeDeveloped";
+
 const SystemCenter = ()=> {
-  return <div>this is SystemCenter</div>
+  return <ToBeDeveloped></ToBeDeveloped>
 };
 
 export default SystemCenter;

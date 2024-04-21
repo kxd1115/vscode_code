@@ -1,29 +1,55 @@
-.login {
+.login-container {
   width: 100%;
   height: 100%;
+  // background: #2d3a4b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-title {
+  text-align: center;
+  height: 40px;
+  line-height: 20px;
+  font-size: 26px;
+  margin-bottom: 10px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.login-form {
+  min-width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+.ant-col-rtl .login-form-forgot {
+  float: left;
+}
+.login-form-button {
+  width: 100%;
+}
+
+.user-info {
   position: absolute;
-  left: 0;
-  top: 0;
-  background: center/cover url('~@/assets/login.png');
+  right: 20px;
+  top: 0px;
 
-  .login-logo {
-    width: 200px;
-    height: 60px;
-    display: block;
-    margin: 0 auto 20px;
-  }
+}
 
-  .login-container {
-    width: 440px;
-    height: 360px;
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 50px rgb(0 0 0 / 10%);
-  }
-
-  .login-checkbox-label {
-    color: #1890ff;
-  }
+.user-info:hover {
+  cursor: pointer;
+}
+.user-name {
+  padding: 5px;
 }

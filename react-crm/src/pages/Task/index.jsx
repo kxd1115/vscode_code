@@ -1,5 +1,7 @@
+import ToBeDeveloped from "@/components/ToBeDeveloped";
+
 const TaskCenter = ()=> {
-  return <div>this is TaskCenter</div>
+  return <ToBeDeveloped></ToBeDeveloped>
 };
 
 export default TaskCenter;

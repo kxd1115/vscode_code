@@ -1,7 +1,7 @@
 import ToBeDeveloped from "@/components/ToBeDeveloped";
 
-const User = ()=> {
+const WorkType = ()=> {
   return <ToBeDeveloped></ToBeDeveloped>
 };
 
-export default User;
+export default WorkType;

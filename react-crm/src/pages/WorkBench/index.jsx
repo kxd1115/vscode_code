@@ -1,5 +1,7 @@
+import ToBeDeveloped from "@/components/ToBeDeveloped";
+
 const WorkBench = ()=> {
-  return <div>this is WorkBench</div>
+  return <ToBeDeveloped></ToBeDeveloped>
 };
 
 export default WorkBench;

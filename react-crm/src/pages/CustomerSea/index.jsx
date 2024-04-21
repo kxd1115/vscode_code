@@ -1,7 +1,7 @@
 import ToBeDeveloped from "@/components/ToBeDeveloped";
 
-const User = ()=> {
+const CustomerSea = ()=> {
   return <ToBeDeveloped></ToBeDeveloped>
 };
 
-export default User;
+export default CustomerSea;

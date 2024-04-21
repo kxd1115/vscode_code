@@ -1,5 +1,9 @@
+import ToBeDeveloped from "@/components/ToBeDeveloped";
+
 const DataBoard = ()=> {
-  return <div>this is DataBoard</div>
+  return (
+    <ToBeDeveloped></ToBeDeveloped>
+  )
 };
 
 export default DataBoard;
