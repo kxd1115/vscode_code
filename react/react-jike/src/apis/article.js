@@ -28,12 +28,12 @@ export function updateArticleAPI(data) {
 }
 
 // 3. 获取文章列表
-export function getArticleListAPI(parms) {
+export function getArticleListAPI(params) {
   // 通用写法
   return request({
     url: '/mp/articles',
     method: 'GET',
-    parms
+    params
   });
 }
 

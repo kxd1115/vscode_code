@@ -1,0 +1,73 @@
+#wrap {
+  color: #337700;
+  background-color: red;
+  width: 100px;
+  height: 150px;
+}
+.box {
+  border: 1px solid green;
+}
+#header {
+  color: black;
+  background-color: aqua;
+  height: 100px;
+  width: 100px;
+}
+#header .navigation {
+  font-size: 12px;
+}
+#header {
+  color: black;
+  background-color: aqua;
+  height: 100px;
+  width: 100px;
+}
+#header .navigation {
+  font-size: 12px;
+}
+#header:hover {
+  color: red;
+  background-color: yellow;
+}
+.component {
+  width: 300px;
+}
+@media (min-width: 768px) {
+  .component {
+    width: 600px;
+  }
+}
+@media (min-width: 768px) and (min-resolution: 192dpi) {
+  .component {
+    background-image: url(/img/retina2x.png);
+  }
+}
+#header {
+  width: calc(100% - 10px);
+}
+@media screen and (min-width: 768px) {
+  .element {
+    font-size: 1.2rem;
+  }
+}
+.class1 {
+  color: green;
+}
+.class1 .class2 {
+  font-size: 18px;
+}
+#page .box {
+  color: black;
+}
+#header a {
+  color: orange;
+  display: block;
+  border: 1px solid black;
+  background-color: grey;
+}
+#header a:hover {
+  background-color: white;
+}
+.button {
+  color: blue;
+}
